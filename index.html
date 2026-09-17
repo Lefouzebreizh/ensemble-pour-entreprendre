@@ -1133,8 +1133,11 @@
         var alpha = 0.12 + Math.pow(utile, 1.2) * 0.88;
         /* Une borne trop proche deviendrait énorme et mangerait la scène :
            on borne son rayon, et elle s'efface en sortant du cadre. */
-        var rayon = Math.min(38, Math.max(3, 32 * haut.echelle));
-        var sortie = Math.min(1, Math.max(0, (sol.distance - 200) / 240));
+        var rayon = Math.min(30, Math.max(3, 30 * haut.echelle));
+        /* Une borne trop proche sort du cadre : son mât traverserait l'image
+           comme un grand trait. On la laisse disparaître avant. */
+        if(sol.distance < 300){ continue; }
+        var sortie = Math.min(1, Math.max(0, (sol.distance - 300) / 260));
         alpha *= sortie;
 
         ctx.beginPath();
@@ -1143,8 +1146,6 @@
         ctx.strokeStyle = "rgba(64,224,208," + (alpha * 0.45).toFixed(3) + ")";
         ctx.lineWidth = Math.max(0.8, Math.min(4, 3 * sol.echelle));
         ctx.stroke();
-
-        if(sortie <= 0){ continue; }
 
         if(actuelle){
           ctx.beginPath();
@@ -1173,7 +1174,7 @@
       var montee = Math.min(1, Math.max(0, (DIST_BATIMENT - dBat) / (DIST_BATIMENT * 0.72)));
       var eclat = Math.min(1, Math.max(0, 1 - Math.abs(dBat - 430) / 430));
       var pied = null;
-      if(dBat > 140){ pied = batiment(xBat, zBat, cz, montee); }
+      if(dBat > 320){ pied = batiment(xBat, zBat, cz, montee); }
 
       /* la brume : le lointain se fond dans le ciel */
       var brume = ctx.createLinearGradient(0, HORIZON - 70, 0, HORIZON + 150);
