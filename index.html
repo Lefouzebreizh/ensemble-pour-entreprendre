@@ -52,6 +52,16 @@
   }
   .avertissement p{margin:.35rem 0;font-size:.95rem}
   .avertissement strong{color:var(--violet)}
+  .alerte-pro{
+    background:linear-gradient(135deg,rgba(64,224,208,.08),rgba(183,155,255,.12)),var(--panneau-clair);
+    border:1px solid var(--bordure-violette);border-left:4px solid var(--turquoise);
+    border-radius:var(--rayon);padding:.9rem 1rem;margin:1rem 0 1.4rem;
+  }
+  .alerte-pro p{margin:.35rem 0;font-size:.95rem}
+  .alerte-pro ul{margin:.5rem 0 .5rem 1.1rem}
+  .alerte-pro li{margin:.3rem 0;font-size:.95rem}
+  #sources{margin-top:2rem}
+  #sources li{margin:.35rem 0}
   nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 0}
   nav.sommaire a{
     border:1px solid var(--bordure);border-radius:999px;padding:.35rem .8rem;
@@ -226,7 +236,8 @@
   </section>
 
   <div class="avertissement" role="note">
-    <p><strong>Ceci est un outil d'orientation et de préparation.</strong> Il ne remplace ni un conseil juridique, ni un conseil comptable, ni un conseil fiscal.</p>
+    <p><strong>Les informations fournies par cet outil le sont à titre strictement indicatif et ne constituent pas un conseil juridique ou fiscal personnalisé.</strong> Il est recommandé de faire valider vos démarches par un professionnel qualifié (avocat, expert-comptable).</p>
+    <p>Cet outil est un support d'orientation et de préparation. Il ne remplace ni un conseil juridique, ni un conseil comptable, ni un conseil fiscal.</p>
     <p>Aucun montant, aucun taux et aucun délai légal n'est affirmé ici. Vérifie chaque point <strong>à la source</strong> — INPI, Urssaf, impots.gouv.fr — ou auprès d'un professionnel, avant d'engager quoi que ce soit.</p>
   </div>
 
@@ -290,6 +301,16 @@
       </form>
 
       <div id="resultat" class="carte resultat" hidden aria-live="polite"></div>
+
+      <div class="alerte-pro" role="note">
+        <p><strong>Ces trois choix engagent durablement — fais-les valider.</strong></p>
+        <ul>
+          <li><strong>Le statut</strong> : micro-entreprise, SASU/SAS, EURL/SARL. Le passage d'un régime à l'autre n'est pas réversible sans frais ni délai.</li>
+          <li><strong>Le régime fiscal</strong> : impôt sur le revenu ou impôt sur les sociétés, et l'option éventuelle.</li>
+          <li><strong>Ta rémunération</strong> : salaire, dividendes, ou les deux — et ce que chacun coûte en cotisations.</li>
+        </ul>
+        <p>Un expert-comptable ou un avocat te répond en une heure sur ces points. C'est le meilleur argent que tu dépenseras dans ton projet. Pour trouver un professionnel : <a href="https://www.experts-comptables.fr/" rel="noopener">experts-comptables.fr</a> (ordre des experts-comptables).</p>
+      </div>
     </section>
 
     <section id="reglementees">
@@ -350,6 +371,23 @@
     </section>
   </main>
   </div>
+
+  <section id="sources">
+    <h2>Sources et références</h2>
+    <p>Cet outil s'appuie sur les textes et les organismes suivants. Les intitulés sont donnés pour que tu ailles vérifier toi-même : <strong>aucun numéro d'article n'est cité de mémoire ici</strong>, et les seuils, taux et délais ne sont pas reproduits.</p>
+    <ul>
+      <li><strong>Code de commerce</strong> — immatriculation des entreprises, statuts et fonctionnement des sociétés commerciales.</li>
+      <li><strong>Code monétaire et financier</strong> — déclaration des bénéficiaires effectifs.</li>
+      <li><strong>Code de la sécurité sociale</strong> — cotisations et contributions sociales des travailleurs indépendants, régime micro-social.</li>
+      <li><strong>Code général des impôts</strong> — régimes d'imposition des bénéfices et taxe sur la valeur ajoutée.</li>
+      <li><strong>Loi n° 2022-172 du 14 février 2022</strong> en faveur de l'activité professionnelle indépendante — séparation automatique des patrimoines personnels et professionnels de l'entrepreneur individuel.</li>
+      <li><strong>Guichet unique des formalités d'entreprises</strong> — <a href="https://procedures.inpi.fr/" rel="noopener">procedures.inpi.fr</a> (INPI).</li>
+      <li><strong>Urssaf</strong> — <a href="https://www.urssaf.fr/" rel="noopener">urssaf.fr</a> et <a href="https://www.autoentrepreneur.urssaf.fr/" rel="noopener">autoentrepreneur.urssaf.fr</a>.</li>
+      <li><strong>Direction générale des finances publiques</strong> — <a href="https://www.impots.gouv.fr/" rel="noopener">impots.gouv.fr</a>.</li>
+      <li><strong>Service-public.gouv.fr</strong> — <a href="https://entreprendre.service-public.gouv.fr/" rel="noopener">entreprendre.service-public.gouv.fr</a>.</li>
+    </ul>
+    <p class="repere"><b>Règle de rédaction :</b> toute valeur chiffrée ajoutée plus tard à cette page doit être datée et liée à sa source officielle. Une valeur sans source ne doit pas être publiée.</p>
+  </section>
 
   <footer>
     <p><strong>Sources officielles citées dans cette page</strong> — à consulter directement :</p>
