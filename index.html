@@ -933,12 +933,23 @@
       var hg = projeter(x0, hauteur, zAv, cz), hd = projeter(x1, hauteur, zAv, cz);
       var hgAr = projeter(x0, hauteur, zAr, cz), hdAr = projeter(x1, hauteur, zAr, cz);
       if(!bg || !bd || !hg || !hd || !hgAr || !hdAr){ return; }
-      face(bg, bd, hd, hg, "rgba(25,38,60," + (0.92 * voile).toFixed(3) + ")");
-      face(hg, hd, hdAr, hgAr, "rgba(78,96,124," + (0.9 * voile).toFixed(3) + ")");
+      face(bg, bd, hd, hg, "rgba(32,47,72," + (0.92 * voile).toFixed(3) + ")");
+      face(hg, hd, hdAr, hgAr, "rgba(146,166,196," + (0.92 * voile).toFixed(3) + ")");
+      /* les tranches de papier attrapent la lumière : c'est ce qui fait
+         lire une pile de dossiers, et pas un bloc sombre */
+      ctx.beginPath();
+      ctx.moveTo(hg.x, hg.y);
+      ctx.lineTo(hd.x, hd.y);
+      ctx.lineTo(hdAr.x, hdAr.y);
+      ctx.lineTo(hgAr.x, hgAr.y);
+      ctx.closePath();
+      ctx.strokeStyle = "rgba(214,228,246," + (0.5 * voile).toFixed(3) + ")";
+      ctx.lineWidth = Math.max(0.7, 1.6 * hg.echelle);
+      ctx.stroke();
       var flanc = (cx > axe(cz)) ? x0 : x1;   /* le côté qu'on voit depuis la route */
       var f1 = projeter(flanc, 0, zAv, cz), f2 = projeter(flanc, 0, zAr, cz);
       var f3 = projeter(flanc, hauteur, zAr, cz), f4 = projeter(flanc, hauteur, zAv, cz);
-      if(f1 && f2 && f3 && f4){ face(f1, f2, f3, f4, "rgba(42,58,84," + (0.88 * voile).toFixed(3) + ")"); }
+      if(f1 && f2 && f3 && f4){ face(f1, f2, f3, f4, "rgba(58,76,106," + (0.88 * voile).toFixed(3) + ")"); }
     }
 
     /* au bout du chemin : le bâtiment, monté étage par étage */
@@ -1088,8 +1099,8 @@
           var graine = m * 2 + c;
           var r1 = bruit(graine), r2 = bruit(graine + 7.5), r3 = bruit(graine + 3.25);
           var cote = (c === 0) ? -1 : 1;
-          var xc = axe(zt) + cote * (DEMI + 18 + r1 * 62);
-          tas(xc, zt, 32 + r2 * 30, 26 + r3 * 24, 70 + r1 * 250, voileLot, cz);
+          var xc = axe(zt) + cote * (DEMI + 42 + r1 * 70);
+          tas(xc, zt, 36 + r2 * 34, 26 + r3 * 24, 80 + r1 * 260, voileLot, cz);
         }
       }
 
