@@ -878,7 +878,7 @@
     var DUREE = 12000;
     var PAS = 40;
     var PORTEE = 3200;
-    var ECART_PAPIER = 190;      /* un tas de paperasse tous les 190 unités */
+    var ECART_PAPIER = 130;      /* un rang de dossiers tous les 130 unités */
     var ECART_PULSE = 760;       /* un trait lumineux tous les 760 unités */
     var DEMI_BATIMENT = 135;     /* au bout du chemin : le bâtiment, l'entreprise */
     var PROF_BATIMENT = 110;
@@ -933,12 +933,12 @@
       var hg = projeter(x0, hauteur, zAv, cz), hd = projeter(x1, hauteur, zAv, cz);
       var hgAr = projeter(x0, hauteur, zAr, cz), hdAr = projeter(x1, hauteur, zAr, cz);
       if(!bg || !bd || !hg || !hd || !hgAr || !hdAr){ return; }
-      face(bg, bd, hd, hg, "rgba(19,30,49," + (0.92 * voile).toFixed(3) + ")");
-      face(hg, hd, hdAr, hgAr, "rgba(58,74,100," + (0.9 * voile).toFixed(3) + ")");
+      face(bg, bd, hd, hg, "rgba(25,38,60," + (0.92 * voile).toFixed(3) + ")");
+      face(hg, hd, hdAr, hgAr, "rgba(78,96,124," + (0.9 * voile).toFixed(3) + ")");
       var flanc = (cx > axe(cz)) ? x0 : x1;   /* le côté qu'on voit depuis la route */
       var f1 = projeter(flanc, 0, zAv, cz), f2 = projeter(flanc, 0, zAr, cz);
       var f3 = projeter(flanc, hauteur, zAr, cz), f4 = projeter(flanc, hauteur, zAv, cz);
-      if(f1 && f2 && f3 && f4){ face(f1, f2, f3, f4, "rgba(34,48,72," + (0.88 * voile).toFixed(3) + ")"); }
+      if(f1 && f2 && f3 && f4){ face(f1, f2, f3, f4, "rgba(42,58,84," + (0.88 * voile).toFixed(3) + ")"); }
     }
 
     /* au bout du chemin : le bâtiment, monté étage par étage */
@@ -1075,18 +1075,22 @@
         ctx.stroke();
       }
 
-      /* la paperasse : les dossiers et les piles qu'il faut traverser */
+      /* la route passe ENTRE les dossiers : une pile de chaque côté,
+         collée au bord du chemin, et haute — un couloir de paperasse */
       var premierLot = Math.floor((cz - PORTEE) / ECART_PAPIER) - 1;
       var dernierLot = Math.floor((cz + 100) / ECART_PAPIER) + 1;
       for(var m = premierLot; m <= dernierLot; m += 1){
         var zt = m * ECART_PAPIER;
         var dt = cz - zt;
         if(dt < 150 || dt > PORTEE){ continue; }
-        var r1 = bruit(m), r2 = bruit(m + 0.5), r3 = bruit(m + 0.25);
-        var cote = ((m % 2) === 0) ? -1 : 1;
-        var xc = axe(zt) + cote * (DEMI + 80 + r1 * 110);
-        tas(xc, zt, 34 + r2 * 34, 30 + r3 * 28, 30 + r1 * 95,
-            Math.pow(Math.max(0, 1 - dt / PORTEE), 0.8), cz);
+        var voileLot = Math.pow(Math.max(0, 1 - dt / PORTEE), 0.8);
+        for(var c = 0; c < 2; c += 1){
+          var graine = m * 2 + c;
+          var r1 = bruit(graine), r2 = bruit(graine + 7.5), r3 = bruit(graine + 3.25);
+          var cote = (c === 0) ? -1 : 1;
+          var xc = axe(zt) + cote * (DEMI + 18 + r1 * 62);
+          tas(xc, zt, 32 + r2 * 30, 26 + r3 * 24, 70 + r1 * 250, voileLot, cz);
+        }
       }
 
       /* le trait lumineux qui s'avance sur le chemin */
