@@ -803,8 +803,12 @@
 
   construireChecklist();
 
-  /* ---------------- Le chemin des huit étapes, en perspective -------------
-     Dessiné à la main sur <canvas> : aucune bibliothèque, aucun réseau.
+  /* ---------------- Le chemin des huit étapes, vu en perspective ----------
+     Une route qui s'enfonce vers l'horizon : le ruban du chemin, huit bornes
+     numérotées, une caméra qui avance, l'étape en cours qui s'allume.
+     Écrit à la main sur <canvas> : aucune bibliothèque, aucun réseau.
+     Le tracé est périodique, donc la boucle de douze secondes est parfaite
+     (elle revient exactement au même point, sans saut visible).
      Tout est facultatif — si le canvas n'existe pas (DOM simulé des audits,
      navigateur ancien), ou si le mouvement est réduit, on ne fait rien ou
      une image fixe. Jamais d'exception qui emporterait le reste de la page. */
@@ -817,74 +821,144 @@
     if(!ctx){ return; }
 
     var largeur = 900, hauteur = 600;
-    var sommets = [];
-    var i, angle;
-    for(i = 0; i < 8; i += 1){
-      angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
-      sommets.push({ x:Math.cos(angle) * 300, z:Math.sin(angle) * 300, y:(i % 2 === 0) ? -46 : -16 });
+    var FOCALE = 900;            /* ouverture de la caméra */
+    var DEMI = 190;              /* demi-largeur du ruban de chemin */
+    var ECART = 380;             /* distance entre deux bornes */
+    var BOUCLE = ECART * 8;      /* huit bornes par tour : la boucle est parfaite */
+    var HAUTEUR_CAM = 130;       /* la caméra, au-dessus du sol */
+    var HAUTEUR_BORNE = 95;      /* la borne, au-dessus du sol */
+    var HORIZON = hauteur * 0.42;
+    var DUREE = 12000;
+    var PAS = 40;
+    var PORTEE = 3200;
+
+    function axe(z){             /* le tracé du chemin, qui serpente */
+      return 220 * Math.sin((2 * Math.PI * z) / BOUCLE);
     }
 
-    /* La caméra est posée au-dessus du chemin : sans cette inclinaison, la
-       boucle s'affiche de profil et ressemble à un simple trait. */
-    var INCLINAISON = 0.52;
-
-    function projet(x, y, z, rotation){
-      var ca = Math.cos(rotation), sa = Math.sin(rotation);
-      var xr = x * ca - z * sa;
-      var zr = x * sa + z * ca;
-      var ci = Math.cos(INCLINAISON), si = Math.sin(INCLINAISON);
-      var yr = y * ci - zr * si;
-      var zc = y * si + zr * ci;
-      var profondeur = zc + 1100;
-      var echelle = 760 / Math.max(profondeur, 80);
-      return { x:largeur / 2 + xr * echelle, y:hauteur / 2 + 40 + yr * echelle, echelle:echelle };
+    /* y = hauteur au-dessus du sol ; le sol est à zéro, le ciel au-dessus. */
+    function projeter(x, y, z, cz){
+      var distance = cz - z;
+      if(distance < 45){ return null; }
+      var echelle = FOCALE / distance;
+      return {
+        x:largeur / 2 + (x - axe(cz)) * echelle,
+        y:HORIZON + (HAUTEUR_CAM - y) * echelle,
+        echelle:echelle,
+        distance:distance
+      };
     }
 
-    function dessinerImage(rotation, indiceActif){
-      var fond = ctx.createLinearGradient(0, 0, largeur, hauteur);
-      fond.addColorStop(0, "#071021");
-      fond.addColorStop(1, "#030913");
-      ctx.fillStyle = fond;
-      ctx.fillRect(0, 0, largeur, hauteur);
+    function dessinerImage(cz){
+      ctx.clearRect(0, 0, largeur, hauteur);
 
-      var points = [];
-      for(var k = 0; k < sommets.length; k += 1){
-        points.push(projet(sommets[k].x, sommets[k].y, sommets[k].z, rotation));
-      }
+      /* le ciel */
+      var ciel = ctx.createLinearGradient(0, 0, 0, HORIZON + 40);
+      ciel.addColorStop(0, "#050b18");
+      ciel.addColorStop(1, "#0a1729");
+      ctx.fillStyle = ciel;
+      ctx.fillRect(0, 0, largeur, HORIZON + 40);
 
-      /* le chemin lui-même, segment par segment */
-      ctx.lineCap = "round";
-      for(var s = 0; s < points.length; s += 1){
-        var a = points[s];
-        var b = points[(s + 1) % points.length];
-        var proche = Math.min(a.echelle, b.echelle);
+      /* le sol */
+      ctx.fillStyle = "#030913";
+      ctx.fillRect(0, HORIZON, largeur, hauteur - HORIZON);
+
+      /* le ruban du chemin, du plus loin au plus proche */
+      var borneCourante = Math.floor(cz / ECART) + 1;
+      var z, suivant, a1, b1, a2, b2, intensite;
+      for(z = cz - PORTEE; z < cz + 240; z += PAS){
+        suivant = z + PAS;
+        a1 = projeter(axe(z) - DEMI, 0, z, cz);
+        b1 = projeter(axe(z) + DEMI, 0, z, cz);
+        a2 = projeter(axe(suivant) - DEMI, 0, suivant, cz);
+        b2 = projeter(axe(suivant) + DEMI, 0, suivant, cz);
+        if(!a1 || !b1 || !a2 || !b2){ continue; }
+        intensite = Math.pow(Math.max(0, 1 - a1.distance / PORTEE), 1.6);
+
         ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.lineWidth = Math.max(1, 9 * proche);
-        ctx.strokeStyle = "rgba(64,224,208," + Math.min(0.72, 0.1 + proche * 0.55).toFixed(3) + ")";
+        ctx.moveTo(a1.x, a1.y);
+        ctx.lineTo(b1.x, b1.y);
+        ctx.lineTo(b2.x, b2.y);
+        ctx.lineTo(a2.x, a2.y);
+        ctx.closePath();
+        ctx.fillStyle = "rgba(18,38,62," + (0.2 + intensite * 0.8).toFixed(3) + ")";
+        ctx.fill();
+
+        /* les deux bordures turquoise */
+        ctx.beginPath();
+        ctx.moveTo(a1.x, a1.y);
+        ctx.lineTo(a2.x, a2.y);
+        ctx.moveTo(b1.x, b1.y);
+        ctx.lineTo(b2.x, b2.y);
+        ctx.strokeStyle = "rgba(64,224,208," + (0.05 + intensite * 0.7).toFixed(3) + ")";
+        ctx.lineWidth = Math.max(0.6, 4 * a1.echelle);
         ctx.stroke();
       }
 
-      /* les huit étapes, avec un halo sur celle qui est « en cours » */
-      for(var j = 0; j < points.length; j += 1){
-        var p = points[j];
-        var rayon = Math.max(2.5, 15 * p.echelle);
-        var actif = (j === indiceActif);
-        ctx.globalAlpha = actif ? 1 : Math.min(0.85, 0.22 + p.echelle * 0.9);
+      /* la ligne médiane, qui défile avec la caméra */
+      for(z = cz - PORTEE + (cz % (2 * PAS)); z < cz + 200; z += 2 * PAS){
+        var m1 = projeter(axe(z), 0, z, cz);
+        var m2 = projeter(axe(z + PAS * 0.7), 0, z + PAS * 0.7, cz);
+        if(!m1 || !m2){ continue; }
+        intensite = Math.pow(Math.max(0, 1 - m1.distance / PORTEE), 1.6);
         ctx.beginPath();
-        ctx.arc(p.x, p.y, rayon, 0, Math.PI * 2);
-        ctx.fillStyle = actif ? "#b79bff" : "#40e0d0";
-        ctx.fill();
-        ctx.globalAlpha = 1;
-        if(actif){
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, rayon * 2.2, 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(183,155,255,.45)";
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        }
+        ctx.moveTo(m1.x, m1.y);
+        ctx.lineTo(m2.x, m2.y);
+        ctx.strokeStyle = "rgba(183,155,255," + (0.04 + intensite * 0.5).toFixed(3) + ")";
+        ctx.lineWidth = Math.max(0.6, 7 * m1.echelle);
+        ctx.stroke();
       }
+
+      /* les huit bornes numérotées, celle du moment allumée */
+      for(var n = borneCourante - 3; n <= borneCourante + 7; n += 1){
+        var zBorne = n * ECART;
+        var sol = projeter(axe(zBorne), 0, zBorne, cz);
+        var haut = projeter(axe(zBorne), HAUTEUR_BORNE, zBorne, cz);
+        if(!sol || !haut){ continue; }
+        var numero = ((n - 1) % 8 + 8) % 8 + 1;
+        var actuelle = (n === borneCourante);
+        var utile = Math.max(0, 1 - sol.distance / PORTEE);
+        var alpha = 0.12 + Math.pow(utile, 1.2) * 0.88;
+        var rayon = Math.max(3, 26 * haut.echelle);
+
+        ctx.beginPath();
+        ctx.moveTo(sol.x, sol.y);
+        ctx.lineTo(haut.x, haut.y);
+        ctx.strokeStyle = "rgba(64,224,208," + (alpha * 0.45).toFixed(3) + ")";
+        ctx.lineWidth = Math.max(0.8, 3 * sol.echelle);
+        ctx.stroke();
+
+        if(actuelle){
+          ctx.beginPath();
+          ctx.arc(haut.x, haut.y, rayon * 2, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(183,155,255,.14)";
+          ctx.fill();
+        }
+        ctx.beginPath();
+        ctx.arc(haut.x, haut.y, rayon, 0, Math.PI * 2);
+        ctx.fillStyle = actuelle ? "#b79bff" : "rgba(64,224,208," + Math.min(1, alpha).toFixed(3) + ")";
+        ctx.fill();
+
+        ctx.fillStyle = "#04121a";
+        ctx.font = "bold " + Math.max(7, rayon * 1.1).toFixed(1) + "px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(numero), haut.x, haut.y + rayon * 0.06);
+      }
+
+      /* la brume : le lointain se fond dans le ciel */
+      var brume = ctx.createLinearGradient(0, HORIZON - 70, 0, HORIZON + 150);
+      brume.addColorStop(0, "#050b18");
+      brume.addColorStop(1, "rgba(3,9,19,0)");
+      ctx.fillStyle = brume;
+      ctx.fillRect(0, 0, largeur, HORIZON + 150);
+
+      /* une lueur à l'horizon, posée par-dessus la brume */
+      var lueur = ctx.createRadialGradient(largeur / 2, HORIZON, 10, largeur / 2, HORIZON, 460);
+      lueur.addColorStop(0, "rgba(64,224,208,.16)");
+      lueur.addColorStop(1, "rgba(64,224,208,0)");
+      ctx.fillStyle = lueur;
+      ctx.fillRect(0, 0, largeur, HORIZON + 160);
     }
 
     var mouvementReduit = false;
@@ -893,14 +967,14 @@
     }catch(erreur){ mouvementReduit = false; }
 
     if(mouvementReduit || typeof window.requestAnimationFrame !== "function"){
-      dessinerImage(0.7, -1);
+      dessinerImage(ECART * 1.5);   /* une image fixe, au milieu du chemin */
       return;
     }
 
     var depart = Date.now();
     function boucle(){
-      var ecoule = (Date.now() - depart) % 12000;
-      dessinerImage((ecoule / 12000) * Math.PI * 2, Math.floor(ecoule / 1500) % 8);
+      var ecoule = (Date.now() - depart) % DUREE;
+      dessinerImage((ecoule / DUREE) * BOUCLE);
       window.requestAnimationFrame(boucle);
     }
     boucle();
