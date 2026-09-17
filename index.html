@@ -837,8 +837,10 @@
     var PAS = 40;
     var PORTEE = 3200;
 
-    function axe(z){             /* le tracé du chemin, qui serpente */
-      return 220 * Math.sin((2 * Math.PI * z) / BOUCLE);
+    function axe(z){             /* le tracé du chemin, qui serpente doucement :
+                                    un virage trop ample sort du champ de la
+                                    caméra et la route n'est plus dans l'axe */
+      return 70 * Math.sin((2 * Math.PI * z) / BOUCLE);
     }
 
     /* y = hauteur au-dessus du sol ; le sol est à zéro, le ciel au-dessus.
