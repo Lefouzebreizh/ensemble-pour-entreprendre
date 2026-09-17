@@ -27,7 +27,7 @@
     font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
     padding-bottom:3rem;
   }
-  .enveloppe{max-width:760px;margin:0 auto;padding:0 1rem}
+  .enveloppe{max-width:1180px;margin:0 auto;padding:0 1rem}
   a{color:var(--turquoise);text-decoration:underline;text-underline-offset:2px}
   a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible{
     outline:2px solid var(--violet);outline-offset:2px;border-radius:6px;
@@ -121,27 +121,123 @@
   @media (prefers-reduced-motion:reduce){
     *{transition:none !important;animation:none !important;scroll-behavior:auto !important}
   }
+
+  /* ---------------- Accueil à cartes ---------------- */
+  .entete{padding:1.6rem 0 .4rem}
+  #accueil h1{margin:.2rem 0 .6rem}
+  .accueil-grille{display:grid;gap:1.4rem;align-items:center;margin:.4rem 0 1.6rem}
+  .accroche{font-size:1.3rem;line-height:1.35;color:var(--texte);margin:.6rem 0 .7rem}
+  .pastilles{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;margin:1rem 0 0;padding:0}
+  .pastilles li{
+    border:1px solid var(--bordure);border-radius:999px;padding:.25rem .8rem;
+    font-size:.85rem;color:var(--texte-doux)
+  }
+  .scene{
+    border:1px solid var(--bordure);border-radius:20px;overflow:hidden;
+    background:radial-gradient(120% 120% at 70% 10%, rgba(64,224,208,.10), rgba(3,9,19,0) 60%), var(--panneau)
+  }
+  #chemin-3d{display:block;width:100%;height:auto}
+  .titre-accueil{font-size:1.1rem;margin:1.6rem 0 .7rem}
+  .cartes-choix{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .choix{display:flex;flex-direction:column;margin:0}
+  .choix h3{margin:0 0 .4rem;font-size:1.02rem}
+  .choix .mot{color:var(--turquoise)}
+  .choix .icone{margin:0 0 .4rem;font-size:1.2rem;color:var(--violet)}
+  .choix p{margin:0 0 1rem;color:var(--texte-doux);font-size:.95rem}
+  .choix .bouton{margin-top:auto;align-self:flex-start}
+  .bouton{
+    display:inline-block;font:inherit;font-weight:600;color:#04121a;text-decoration:none;
+    background:linear-gradient(100deg,var(--turquoise),var(--violet));
+    border:0;border-radius:999px;padding:.6rem 1.2rem;cursor:pointer
+  }
+  .bouton:hover{filter:brightness(1.08)}
+  .retour{
+    display:inline-block;color:var(--texte);border:1px solid var(--bordure-violette);
+    border-radius:999px;padding:.4rem .9rem;font-size:.9rem;text-decoration:none
+  }
+
+  /* ---------------- Le contenu vit derrière les cartes ----------------
+     Sans JavaScript, chaque carte reste un lien vers son ancre :
+     :target affiche la bonne partie. Rien ne dépend du script.      */
+  #contenu{margin-top:.6rem}
+  #contenu section{display:none}
+  #contenu section:target{display:block}
+  .retour-ligne{margin:1.2rem 0 .6rem}
+  #etapes{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+  #etapes .carte{margin:0}
+
+  @media (min-width:900px){
+    .accueil-grille{grid-template-columns:1.05fr .95fr}
+  }
 </style>
 </head>
 <body>
 <div class="enveloppe">
 
-  <header>
+  <header class="entete">
     <p class="marque">Ensemble pour entreprendre</p>
-    <h1>Créer son activité sans se perdre</h1>
-    <p class="chapo">Un questionnaire d'orientation, un parcours en huit étapes, et une checklist qui garde tes dates.</p>
+  </header>
+
+  <section id="accueil" aria-labelledby="titre-accueil">
+    <h1 id="titre-accueil">Créer son activité sans se perdre</h1>
+
+    <div class="accueil-grille">
+      <div class="accueil-texte">
+        <p class="accroche">Tu n'as pas besoin de tout savoir aujourd'hui. Tu as besoin de savoir par quoi commencer.</p>
+        <p class="chapo">Un questionnaire d'orientation, un parcours en huit étapes, et une checklist qui garde tes dates. Tout tient dans cette page — sans compte, sans installation, et rien ne sort de ton navigateur.</p>
+        <ul class="pastilles">
+          <li>Gratuit</li>
+          <li>Sans compte</li>
+          <li>À ton rythme</li>
+        </ul>
+      </div>
+      <div class="scene">
+        <canvas id="chemin-3d" width="900" height="600" role="img" aria-label="Le chemin des huit étapes, dessiné en perspective"></canvas>
+      </div>
+    </div>
+
+    <h2 class="titre-accueil">Par où veux-tu commencer ?</h2>
+    <div class="cartes-choix">
+      <article class="carte choix">
+        <p class="icone" aria-hidden="true">◆</p>
+        <h3>Je ne sais pas encore <span class="mot">quel statut</span> choisir</h3>
+        <p>Six questions, une piste expliquée parmi trois — avec les points à surveiller.</p>
+        <a class="bouton" href="#orientation">Faire le questionnaire</a>
+      </article>
+      <article class="carte choix">
+        <p class="icone" aria-hidden="true">◆</p>
+        <h3>Mon activité est <span class="mot">réglementée</span></h3>
+        <p>Bâtiment, professions réglementées, activités soumises à autorisation : l'ordre des démarches.</p>
+        <a class="bouton" href="#reglementees">Voir ce qui s'applique</a>
+      </article>
+      <article class="carte choix">
+        <p class="icone" aria-hidden="true">◆</p>
+        <h3>Je veux <span class="mot">les huit étapes</span></h3>
+        <p>Ce qu'il y a à faire, les documents à préparer, et un repère de travail par étape.</p>
+        <a class="bouton" href="#parcours">Ouvrir le parcours</a>
+      </article>
+      <article class="carte choix">
+        <p class="icone" aria-hidden="true">◆</p>
+        <h3>J'ai <span class="mot">déjà commencé</span></h3>
+        <p>Ma checklist datée : les repères se calculent, tes cases restent cochées.</p>
+        <a class="bouton" href="#checklist">Aller à ma checklist</a>
+      </article>
+    </div>
+  </section>
+
+  <div class="avertissement" role="note">
+    <p><strong>Ceci est un outil d'orientation et de préparation.</strong> Il ne remplace ni un conseil juridique, ni un conseil comptable, ni un conseil fiscal.</p>
+    <p>Aucun montant, aucun taux et aucun délai légal n'est affirmé ici. Vérifie chaque point <strong>à la source</strong> — INPI, Urssaf, impots.gouv.fr — ou auprès d'un professionnel, avant d'engager quoi que ce soit.</p>
+  </div>
+
+  <div id="contenu">
+    <p class="retour-ligne"><a class="retour" href="#accueil">← Revenir à l'accueil</a></p>
     <nav class="sommaire" aria-label="Sommaire">
       <a href="#orientation">Mon orientation</a>
       <a href="#reglementees">Activités réglementées</a>
       <a href="#parcours">Le parcours en 8 étapes</a>
       <a href="#checklist">Ma checklist</a>
     </nav>
-  </header>
-
-  <div class="avertissement" role="note">
-    <p><strong>Ceci est un outil d'orientation et de préparation.</strong> Il ne remplace ni un conseil juridique, ni un conseil comptable, ni un conseil fiscal.</p>
-    <p>Aucun montant, aucun taux et aucun délai légal n'est affirmé ici. Vérifie chaque point <strong>à la source</strong> — INPI, Urssaf, impots.gouv.fr — ou auprès d'un professionnel, avant d'engager quoi que ce soit.</p>
-  </div>
 
   <main>
     <section id="orientation">
@@ -253,6 +349,7 @@
       <div id="groupes"></div>
     </section>
   </main>
+  </div>
 
   <footer>
     <p><strong>Sources officielles citées dans cette page</strong> — à consulter directement :</p>
@@ -705,6 +802,104 @@
   });
 
   construireChecklist();
+
+  /* ---------------- Le chemin des huit étapes, en perspective -------------
+     Dessiné à la main sur <canvas> : aucune bibliothèque, aucun réseau.
+     Tout est facultatif — si le canvas n'existe pas (DOM simulé des audits,
+     navigateur ancien), ou si le mouvement est réduit, on ne fait rien ou
+     une image fixe. Jamais d'exception qui emporterait le reste de la page. */
+  function dessinerChemin(){
+    var scene = document.getElementById("chemin-3d");
+    if(!scene || typeof scene.getContext !== "function"){ return; }
+
+    var ctx;
+    try{ ctx = scene.getContext("2d"); }catch(erreur){ ctx = null; }
+    if(!ctx){ return; }
+
+    var largeur = 900, hauteur = 600;
+    var sommets = [];
+    var i, angle;
+    for(i = 0; i < 8; i += 1){
+      angle = (i / 8) * Math.PI * 2 - Math.PI / 2;
+      sommets.push({ x:Math.cos(angle) * 300, z:Math.sin(angle) * 300, y:(i % 2 === 0) ? -46 : -16 });
+    }
+
+    function projet(x, y, z, rotation){
+      var ca = Math.cos(rotation), sa = Math.sin(rotation);
+      var xr = x * ca - z * sa;
+      var zr = x * sa + z * ca;
+      var profondeur = zr + 900;
+      var echelle = 700 / Math.max(profondeur, 80);
+      return { x:largeur / 2 + xr * echelle, y:hauteur / 2 + 120 + y * echelle, echelle:echelle };
+    }
+
+    function dessinerImage(rotation, indiceActif){
+      var fond = ctx.createLinearGradient(0, 0, largeur, hauteur);
+      fond.addColorStop(0, "#071021");
+      fond.addColorStop(1, "#030913");
+      ctx.fillStyle = fond;
+      ctx.fillRect(0, 0, largeur, hauteur);
+
+      var points = [];
+      for(var k = 0; k < sommets.length; k += 1){
+        points.push(projet(sommets[k].x, sommets[k].y, sommets[k].z, rotation));
+      }
+
+      /* le chemin lui-même, segment par segment */
+      ctx.lineCap = "round";
+      for(var s = 0; s < points.length; s += 1){
+        var a = points[s];
+        var b = points[(s + 1) % points.length];
+        var proche = Math.min(a.echelle, b.echelle);
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.lineWidth = Math.max(1, 9 * proche);
+        ctx.strokeStyle = "rgba(64,224,208," + Math.min(0.72, 0.1 + proche * 0.55).toFixed(3) + ")";
+        ctx.stroke();
+      }
+
+      /* les huit étapes, avec un halo sur celle qui est « en cours » */
+      for(var j = 0; j < points.length; j += 1){
+        var p = points[j];
+        var rayon = Math.max(2.5, 15 * p.echelle);
+        var actif = (j === indiceActif);
+        ctx.globalAlpha = actif ? 1 : Math.min(0.85, 0.22 + p.echelle * 0.9);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, rayon, 0, Math.PI * 2);
+        ctx.fillStyle = actif ? "#b79bff" : "#40e0d0";
+        ctx.fill();
+        ctx.globalAlpha = 1;
+        if(actif){
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, rayon * 2.2, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(183,155,255,.45)";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+      }
+    }
+
+    var mouvementReduit = false;
+    try{
+      mouvementReduit = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    }catch(erreur){ mouvementReduit = false; }
+
+    if(mouvementReduit || typeof window.requestAnimationFrame !== "function"){
+      dessinerImage(0.7, -1);
+      return;
+    }
+
+    var depart = Date.now();
+    function boucle(){
+      var ecoule = (Date.now() - depart) % 12000;
+      dessinerImage((ecoule / 12000) * Math.PI * 2, Math.floor(ecoule / 1500) % 8);
+      window.requestAnimationFrame(boucle);
+    }
+    boucle();
+  }
+
+  dessinerChemin();
 })();
 </script>
 </body>

@@ -15,7 +15,19 @@ conçue d'abord pour un écran étroit.
 
 ## Ce que fait la page
 
-Quatre parties, dans l'ordre où un créateur se pose les questions.
+**Un écran d'accueil à cartes.** La page s'ouvre sur quatre cartes — « Je ne
+sais pas encore quel statut choisir », « Mon activité est réglementée », « Je
+veux les huit étapes », « J'ai déjà commencé » — et le contenu ne s'affiche
+qu'une fois une carte choisie. Le lien « Revenir à l'accueil » ramène aux
+cartes. Chaque carte est un simple lien d'ancrage : **la page fonctionne sans
+JavaScript**, les parties s'affichent par `:target`.
+
+**Le chemin des huit étapes, en perspective.** À droite de l'accueil, le chemin
+est tracé sur un `<canvas>` : projection perspective écrite à la main, aucune
+bibliothèque, aucun réseau, boucle d'environ douze secondes. Si le système
+demande de réduire les mouvements, l'image reste fixe.
+
+Puis quatre parties, dans l'ordre où un créateur se pose les questions.
 
 **1. Mon orientation de statut.** Six questions — seul ou à plusieurs, nature de
 l'activité, priorité, associés, TVA, salariés — et une piste parmi trois :
@@ -59,8 +71,8 @@ affirmé.** C'est l'axe du document, pas une précaution de fin de page :
 - les protections d'identité (plafond de chiffre d'affaires, déduction des
   charges, obligations d'assurance) sont présentées comme **à vérifier selon
   votre situation**, jamais comme des règles énoncées ;
-- l'avertissement figure **en haut de page** et **de nouveau à l'étape 1**,
-  celle du choix du statut.
+- l'avertissement figure **sur l'écran d'accueil, juste sous les cartes**, et
+  **de nouveau à l'étape 1**, celle du choix du statut.
 
 ## Choix de conception
 
@@ -70,8 +82,14 @@ affirmé.** C'est l'axe du document, pas une précaution de fin de page :
 - **Aucune police ni ressource externe.** La page n'appelle rien sur le réseau.
 - **Palette** : fond `#030913`, turquoise `#40e0d0` et violet `#b79bff` comme
   couleurs dominantes. **Ni orange ni jaune**, conformément à la consigne.
-- **Mobile d'abord.** Une colonne, cibles tactiles larges, texte lisible sans
-  zoom.
+- **Mobile d'abord, large ensuite.** Une colonne et des cibles tactiles larges
+  sur téléphone ; au-delà de 900 px, la largeur utile monte à 1 180 px,
+  l'accueil passe en deux colonnes (texte à gauche, animation à droite), les
+  cartes et le parcours s'affichent en grille. Tout revient en une seule colonne
+  sous 720 px.
+- **Le contenu derrière les cartes, sans dépendre du script.** L'affichage de
+  chaque partie repose sur `:target` en CSS ; le JavaScript ne sert qu'à
+  l'animation et à la checklist.
 - **Mouvement réduit respecté** : la règle `prefers-reduced-motion` coupe
   transitions et animations.
 - **Accessibilité** : contrastes élevés, `fieldset` et `legend` pour le
@@ -157,6 +175,27 @@ Ce que cela ne remplace pas : l'**affichage réel** dans un navigateur. Aucun
 rendu, aucune capture, aucun lecteur d'écran n'a été utilisé ici ; la
 vérification visuelle reste celle décrite juste en dessous, en deux minutes.
 
+## Refonte du 17 septembre 2026 (accueil à cartes et animation)
+
+`index.html` a reçu son écran d'accueil, l'animation du chemin et la mise en
+page large. Les trois audits ont été rejoués après la refonte, et ils passent :
+
+- **audit de la page** : script exécuté **sans erreur** dans le DOM simulé →
+  8 étapes, 8 groupes, **36 cases à cocher**, 8 repères, 13 liens, 8 mentions
+  « à vérifier à la source » ; **324 combinaisons → 324 pistes, 0 exception** ;
+- **audit de persistance** : 36 cases créées, 3 cases cochées **retrouvées après
+  rechargement** (jauge à 8 %), date restaurée ; « Réinitialiser » n'efface rien
+  si la confirmation est refusée, efface tout si elle est acceptée ;
+- **contrôle du vocabulaire** : 61 marques de tutoiement ; cinq lignes signalées
+  dont **quatre faux positifs** (le mot `faites` dans les variables du script) et
+  une seule occurrence légitime, « SAS si vous êtes plusieurs », qui désigne les
+  **associés** et non le lecteur.
+
+**Ce que ces audits ne prouvent pas** : l'animation du chemin. Le DOM simulé
+n'exécute ni `<canvas>` ni `getContext` — le script est donc écrit pour
+s'arrêter proprement dans ce cas, et **l'animation n'a été vue dans aucun
+navigateur**. Elle est à regarder à l'œil, comme le reste du rendu.
+
 ## Ce qui n'a pas pu être vérifié
 
 Dit franchement, parce que la page elle-même ne promet rien qu'elle ne puisse
@@ -181,13 +220,17 @@ tenir :
 
 ## Vérifier soi-même, en deux minutes
 
-1. Ouvrir `index.html` dans un navigateur.
-2. Répondre aux six questions : un résultat doit s'afficher sous le formulaire,
+1. Ouvrir `index.html` dans un navigateur : l'écran d'accueil s'affiche, avec ses
+   quatre cartes et l'animation du chemin.
+2. Cliquer une carte : la partie correspondante apparaît ; « Revenir à
+   l'accueil » ramène aux cartes. Recharger la page directement sur `#parcours` :
+   la bonne partie doit s'ouvrir seule, sans passer par les cartes.
+3. Répondre aux six questions : un résultat doit s'afficher sous le formulaire,
    avec « pourquoi » et « points de vigilance ».
-3. Descendre au parcours : huit étapes numérotées, chacune avec ses listes, son
-   repère et ses liens.
-4. Entrer une date de départ dans la checklist : les mentions « semaine du… »
+4. Sur un écran large : accueil en deux colonnes, cartes et parcours en grille.
+   Rétrécir la fenêtre sous 720 px : tout doit repasser en une colonne.
+5. Entrer une date de départ dans la checklist : les mentions « semaine du… »
    doivent apparaître sous chaque titre d'étape.
-5. Cocher trois ou quatre cases, recharger la page : les cases doivent rester
+6. Cocher trois ou quatre cases, recharger la page : les cases doivent rester
    cochées et la barre de progression conserver sa valeur.
-6. Appuyer sur **Réinitialiser** : tout revient à zéro après confirmation.
+7. Appuyer sur **Réinitialiser** : tout revient à zéro après confirmation.

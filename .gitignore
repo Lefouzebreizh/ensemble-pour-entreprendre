@@ -1,0 +1,8 @@
+# Ce qui ne doit jamais être publié
+memory/
+.openclaw/
+studio-creatif/node_modules/
+studio-creatif/dist/
+studio-creatif/dist-ssr/
+studio-creatif/data/
+studio-creatif/.env
