@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Créer son activité sans se perdre — Ensemble pour entreprendre</title>
+<meta name="description" content="Parcours guidé et checklist personnalisée pour créer son activité : orientation de statut, documents à préparer, formalités et liens officiels.">
+<style>
+  :root{
+    --fond:#030913;
+    --panneau:#0a1424;
+    --panneau-clair:#101c31;
+    --bordure:rgba(64,224,208,.22);
+    --bordure-violette:rgba(183,155,255,.40);
+    --texte:#e9eff8;
+    --texte-doux:#a9b8cd;
+    --turquoise:#40e0d0;
+    --violet:#b79bff;
+    --rayon:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--fond);
+    color:var(--texte);
+    font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    padding-bottom:3rem;
+  }
+  .enveloppe{max-width:760px;margin:0 auto;padding:0 1rem}
+  a{color:var(--turquoise);text-decoration:underline;text-underline-offset:2px}
+  a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible{
+    outline:2px solid var(--violet);outline-offset:2px;border-radius:6px;
+  }
+  header{padding:2.2rem 0 1rem}
+  .marque{
+    margin:0;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--turquoise);
+  }
+  h1{font-size:1.55rem;line-height:1.25;margin:.6rem 0 .5rem}
+  .chapo{margin:0;color:var(--texte-doux)}
+  h2{font-size:1.2rem;margin:2.2rem 0 .6rem}
+  h3{font-size:1rem;margin:0 0 .5rem}
+  p{margin:.5rem 0}
+  .avertissement{
+    background:var(--panneau-clair);
+    border:1px solid var(--bordure-violette);
+    border-left:4px solid var(--violet);
+    border-radius:var(--rayon);
+    padding:.9rem 1rem;
+    margin:1rem 0 1.4rem;
+  }
+  .avertissement p{margin:.35rem 0;font-size:.95rem}
+  .avertissement strong{color:var(--violet)}
+  nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 0}
+  nav.sommaire a{
+    border:1px solid var(--bordure);border-radius:999px;padding:.35rem .8rem;
+    font-size:.9rem;text-decoration:none;color:var(--texte)
+  }
+  .carte{
+    background:var(--panneau);border:1px solid var(--bordure);
+    border-radius:var(--rayon);padding:1rem;margin:.9rem 0;
+  }
+  .question{border:0;margin:0 0 1rem;padding:0}
+  .question legend{font-weight:600;padding:0 0 .35rem}
+  .choix{display:block;margin:.25rem 0;color:var(--texte-doux)}
+  .choix input{margin-right:.5rem}
+  button{
+    font:inherit;color:#04121a;background:var(--turquoise);
+    border:0;border-radius:999px;padding:.6rem 1.2rem;font-weight:600;cursor:pointer;
+  }
+  button.secondaire{
+    background:transparent;color:var(--texte);border:1px solid var(--bordure-violette);
+  }
+  .resultat{border-color:var(--bordure-violette)}
+  .resultat h3{color:var(--turquoise)}
+  .etape{border-left:3px solid var(--turquoise)}
+  .etape .num{
+    display:inline-block;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--turquoise);margin-bottom:.2rem;
+  }
+  ul{margin:.4rem 0 .4rem 1.1rem;padding:0}
+  li{margin:.25rem 0}
+  .titre-liste{font-weight:600;color:var(--texte);margin:.7rem 0 .1rem}
+  .repere{
+    margin-top:.8rem;padding:.6rem .8rem;border-radius:10px;
+    background:var(--panneau-clair);border:1px solid var(--bordure);
+    font-size:.92rem;color:var(--texte-doux)
+  }
+  .repere b{color:var(--violet)}
+  .liens{margin-top:.7rem;font-size:.95rem}
+  .liens a{display:inline-block;margin:.15rem .8rem .15rem 0}
+  .verifier{
+    display:inline-block;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--violet);border:1px solid var(--bordure-violette);border-radius:999px;
+    padding:.1rem .55rem;margin-left:.4rem
+  }
+  .check{
+    display:flex;gap:.6rem;align-items:flex-start;margin:.3rem 0;
+    color:var(--texte-doux)
+  }
+  .check input{margin-top:.35rem}
+  .jauge{
+    height:10px;border-radius:999px;background:var(--panneau-clair);
+    border:1px solid var(--bordure);overflow:hidden;margin:.6rem 0 .3rem
+  }
+  .jauge > span{display:block;height:100%;background:var(--turquoise);width:0}
+  .compte{font-size:.9rem;color:var(--texte-doux);margin:0 0 .8rem}
+  .date-champ{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.6rem 0 1rem}
+  input[type="date"]{
+    font:inherit;color:var(--texte);background:var(--panneau-clair);
+    border:1px solid var(--bordure);border-radius:10px;padding:.5rem .7rem
+  }
+  footer{margin-top:2.5rem;color:var(--texte-doux);font-size:.9rem}
+  footer ul{margin-left:1rem}
+  .groupe-checklist{border-left:2px solid var(--bordure);padding-left:.9rem;margin:1rem 0}
+  .groupe-checklist h3{color:var(--texte)}
+  @media (min-width:620px){
+    h1{font-size:1.9rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+  }
+</style>
+</head>
+<body>
+<div class="enveloppe">
+
+  <header>
+    <p class="marque">Ensemble pour entreprendre</p>
+    <h1>Créer son activité sans se perdre</h1>
+    <p class="chapo">Un questionnaire d'orientation, un parcours en huit étapes, et une checklist qui garde tes dates.</p>
+    <nav class="sommaire" aria-label="Sommaire">
+      <a href="#orientation">Mon orientation</a>
+      <a href="#reglementees">Activités réglementées</a>
+      <a href="#parcours">Le parcours en 8 étapes</a>
+      <a href="#checklist">Ma checklist</a>
+    </nav>
+  </header>
+
+  <div class="avertissement" role="note">
+    <p><strong>Ceci est un outil d'orientation et de préparation.</strong> Il ne remplace ni un conseil juridique, ni un conseil comptable, ni un conseil fiscal.</p>
+    <p>Aucun montant, aucun taux et aucun délai légal n'est affirmé ici. Vérifie chaque point <strong>à la source</strong> — INPI, Urssaf, impots.gouv.fr — ou auprès d'un professionnel, avant d'engager quoi que ce soit.</p>
+  </div>
+
+  <main>
+    <section id="orientation">
+      <h2>1. Mon orientation de statut</h2>
+      <p>Six questions, une piste parmi trois. C'est une orientation, pas une décision : trois réponses pèsent vraiment — seul ou à plusieurs, ta priorité, l'arrivée d'associés — les autres servent à préciser ton projet.</p>
+
+      <form id="formulaire" class="carte">
+        <fieldset class="question">
+          <legend>Tu lances ton activité…</legend>
+          <label class="choix"><input type="radio" name="q1" value="seul" required> seul</label>
+          <label class="choix"><input type="radio" name="q1" value="plusieurs"> à plusieurs</label>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>Ton activité porte plutôt sur…</legend>
+          <label class="choix"><input type="radio" name="q2" value="produits" required> la vente de produits</label>
+          <label class="choix"><input type="radio" name="q2" value="services"> des prestations de services</label>
+          <label class="choix"><input type="radio" name="q2" value="deux"> les deux</label>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>Ta priorité, aujourd'hui…</legend>
+          <label class="choix"><input type="radio" name="q3" value="vite" required> démarrer vite, avec le moins de formalités</label>
+          <label class="choix"><input type="radio" name="q3" value="charges"> déduire mes charges et piloter finement</label>
+          <label class="choix"><input type="radio" name="q3" value="remuneration"> arbitrer ma rémunération entre salaire et dividendes</label>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>Souhaites-tu pouvoir accueillir de nouveaux associés facilement ?</legend>
+          <label class="choix"><input type="radio" name="q4" value="oui" required> oui</label>
+          <label class="choix"><input type="radio" name="q4" value="non"> non</label>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>Penses-tu facturer avec TVA dès le départ ?</legend>
+          <p class="choix">La TVA ne départage pas les statuts : une micro-entreprise peut tout à fait facturer la TVA. Cette réponse sert au parcours, pas à la recommandation.</p>
+          <label class="choix"><input type="radio" name="q5" value="oui" required> oui</label>
+          <label class="choix"><input type="radio" name="q5" value="non"> non</label>
+          <label class="choix"><input type="radio" name="q5" value="sais-pas"> je ne sais pas encore</label>
+        </fieldset>
+
+        <fieldset class="question">
+          <legend>Envisages-tu des salariés à court terme ?</legend>
+          <label class="choix"><input type="radio" name="q6" value="oui" required> oui</label>
+          <label class="choix"><input type="radio" name="q6" value="non"> non</label>
+          <label class="choix"><input type="radio" name="q6" value="sais-pas"> je ne sais pas encore</label>
+        </fieldset>
+
+        <button type="submit">Voir ma piste</button>
+      </form>
+
+      <div id="resultat" class="carte resultat" hidden aria-live="polite"></div>
+    </section>
+
+    <section id="reglementees">
+      <h2>2. Si ton activité est réglementée</h2>
+      <p>Certaines activités demandent une qualification, une autorisation ou une assurance <strong>en plus</strong> des formalités habituelles. Le parcours ne les remplace pas : il les complète.</p>
+      <div class="carte">
+        <p class="titre-liste">Bâtiment et artisanat</p>
+        <ul>
+          <li>Une qualification professionnelle peut être exigée pour t'inscrire au répertoire des métiers.</li>
+          <li>Une assurance de responsabilité civile décennale est obligatoire dès lors que tu réalises des travaux de construction.</li>
+        </ul>
+        <p class="titre-liste">Professions libérales réglementées</p>
+        <ul>
+          <li>Selon la profession, une inscription à un ordre, une autorisation d'exercice ou un diplôme est nécessaire.</li>
+          <li>Les règles de société — participation, capital, dénomination — peuvent être propres à ta profession.</li>
+        </ul>
+        <p class="titre-liste">Activités soumises à autorisation</p>
+        <ul>
+          <li>Débit de boissons, transport de personnes ou de marchandises, sécurité privée, commerce alimentaire, hébergement : des autorisations spécifiques s'ajoutent aux formalités.</li>
+          <li>Certaines activités sont interdites ou encadrées selon le statut choisi : à vérifier avant de trancher.</li>
+        </ul>
+        <p class="titre-liste">Dans tous les cas</p>
+        <ul>
+          <li>Renseigne-toi d'abord auprès de l'autorité compétente pour ton métier ou ton ordre professionnel, puis déclare ton activité sur le guichet unique.</li>
+        </ul>
+        <p class="repere"><b>Repère de travail :</b> avant le dépôt du dossier<span class="verifier">à vérifier à la source</span></p>
+        <p class="liens">
+          <a href="https://entreprendre.service-public.gouv.fr/" rel="noopener">Entreprendre — service-public.gouv.fr</a>
+          <a href="https://procedures.inpi.fr/" rel="noopener">Guichet unique — INPI</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="parcours">
+      <h2>3. Le parcours en huit étapes</h2>
+      <p>Pour chaque étape : ce qu'il y a à faire, les documents à préparer, un repère de travail, et le lien officiel.</p>
+      <div id="etapes"></div>
+    </section>
+
+    <section id="checklist">
+      <h2>4. Ma checklist, avec mes dates</h2>
+      <p>Entre la date de départ : les repères se calculent à partir d'elle, et tes cases cochées restent enregistrées dans ce navigateur.</p>
+
+      <div class="date-champ">
+        <label for="depart">Date de départ :</label>
+        <input type="date" id="depart">
+        <button type="button" class="secondaire" id="reinitialiser">Réinitialiser</button>
+      </div>
+
+      <div class="jauge" role="progressbar" aria-label="Progression de la checklist" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="jauge">
+        <span id="jauge-remplie"></span>
+      </div>
+      <p class="compte" id="compte">0 point sur 0</p>
+
+      <p class="repere">Ces repères sont un <b>plan de travail</b>, pas des échéances légales. Les délais réels dépendent de ta situation et se vérifient à la source.</p>
+
+      <div id="groupes"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>Sources officielles citées dans cette page</strong> — à consulter directement :</p>
+    <ul>
+      <li><a href="https://entreprendre.service-public.gouv.fr/">Entreprendre — service-public.gouv.fr</a></li>
+      <li><a href="https://entreprendre.service-public.gouv.fr/vosdroits/F15252">Aide à la reprise ou à la création d'entreprise</a></li>
+      <li><a href="https://procedures.inpi.fr/">Guichet unique des formalités d'entreprises — INPI</a></li>
+      <li><a href="https://www.inpi.fr/">INPI</a></li>
+      <li><a href="https://www.urssaf.fr/">Urssaf</a></li>
+      <li><a href="https://www.autoentrepreneur.urssaf.fr/">Auto-entrepreneur — Urssaf</a></li>
+      <li><a href="https://www.impots.gouv.fr/">impots.gouv.fr</a></li>
+      <li><a href="https://annuaire-entreprises.data.gouv.fr/">Annuaire des entreprises</a></li>
+    </ul>
+    <p>Cette page ne collecte rien et n'envoie rien : tout se passe dans ton navigateur. Tes cases cochées sont stockées localement, sur ton appareil uniquement.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ------------------------------------------------------------------
+     Les huit étapes. Aucun montant, aucun taux, aucun délai légal :
+     dès qu'une valeur n'est pas certaine, on renvoie à la source.
+     ------------------------------------------------------------------ */
+  var ETAPES = [
+    {
+      id:"statut",
+      titre:"Choisir son statut",
+      avertissement:true,
+      faire:[
+        "Répondre au questionnaire d'orientation ci-dessus",
+        "Comparer les trois pistes : micro-entreprise, SASU ou SAS, EURL ou SARL",
+        "Noter les questions à poser à un professionnel avant de trancher"
+      ],
+      documents:[
+        "Pièce d'identité",
+        "Justificatif de domicile"
+      ],
+      repere:"Avant toute formalité",
+      semaines:0,
+      liens:[
+        {t:"Entreprendre — service-public.gouv.fr", u:"https://entreprendre.service-public.gouv.fr/"},
+        {t:"INPI", u:"https://www.inpi.fr/"}
+      ]
+    },
+    {
+      id:"dossier",
+      titre:"Préparer son dossier",
+      faire:[
+        "Décrire l'activité en une phrase claire",
+        "Choisir un nom et vérifier sa disponibilité",
+        "Rassembler les pièces demandées",
+        "Rédiger les statuts si tu crées une société — avec un accompagnement professionnel"
+      ],
+      documents:[
+        "Pièce d'identité",
+        "Justificatif de domicile",
+        "Les pièces complémentaires réclamées par le guichet unique, selon ta situation"
+      ],
+      repere:"Avant le dépôt",
+      semaines:1,
+      liens:[
+        {t:"Guichet unique — INPI", u:"https://procedures.inpi.fr/"},
+        {t:"INPI", u:"https://www.inpi.fr/"}
+      ]
+    },
+    {
+      id:"formalites",
+      titre:"Formalités : guichet unique et annonce légale",
+      faire:[
+        "Déposer la déclaration sur le guichet unique",
+        "Publier une annonce légale si tu crées une société — vérifie si ta situation l'exige",
+        "Déclarer les bénéficiaires effectifs si tu crées une société",
+        "Suivre l'état du dossier et répondre aux demandes de complément"
+      ],
+      documents:[
+        "Le dossier préparé à l'étape précédente",
+        "Les justificatifs réclamés par le guichet unique"
+      ],
+      repere:"Dès que le dossier est complet — un dossier incomplet suspend le traitement",
+      semaines:2,
+      liens:[
+        {t:"Guichet unique — INPI", u:"https://procedures.inpi.fr/"},
+        {t:"Aide à la création d'entreprise — service-public", u:"https://entreprendre.service-public.gouv.fr/vosdroits/F15252"}
+      ]
+    },
+    {
+      id:"urssaf",
+      titre:"Urssaf",
+      faire:[
+        "Créer son compte",
+        "Déclarer l'activité selon le régime retenu",
+        "Organiser ses déclarations périodiques",
+        "Vérifier ta protection sociale de dirigeant : régime des indépendants ou assimilé salarié, selon le statut",
+        "Vérifier ses options et ses échéances dans l'espace en ligne"
+      ],
+      documents:[
+        "Numéro d'identification de l'entreprise, une fois attribué",
+        "Coordonnées bancaires"
+      ],
+      repere:"Après l'immatriculation — les périodicités dépendent du régime et se vérifient à la source",
+      semaines:3,
+      liens:[
+        {t:"Urssaf", u:"https://www.urssaf.fr/"},
+        {t:"Auto-entrepreneur — Urssaf", u:"https://www.autoentrepreneur.urssaf.fr/"}
+      ]
+    },
+    {
+      id:"impots",
+      titre:"Impôts",
+      faire:[
+        "Créer son espace professionnel",
+        "Vérifier le régime fiscal retenu — impôt sur le revenu ou impôt sur les sociétés — et l'option éventuelle",
+        "Déclarer son chiffre d'affaires ou ses résultats selon le régime",
+        "Se renseigner sur les options disponibles",
+        "Vérifier son régime de TVA : franchise en base ou réel, selon le chiffre d'affaires"
+      ],
+      documents:[
+        "Numéro d'identification de l'entreprise",
+        "Justificatifs de chiffre d'affaires ou de résultat"
+      ],
+      repere:"À l'ouverture de l'espace professionnel — régime, périodicité et options se vérifient à la source",
+      semaines:4,
+      liens:[
+        {t:"impots.gouv.fr", u:"https://www.impots.gouv.fr/"}
+      ]
+    },
+    {
+      id:"banque",
+      titre:"Banque",
+      faire:[
+        "Ouvrir un compte dédié à l'activité",
+        "Pour une société, déposer le capital selon les modalités indiquées par l'établissement",
+        "Séparer les flux personnels et professionnels"
+      ],
+      documents:[
+        "Justificatif d'immatriculation",
+        "Pièce d'identité",
+        "Les documents réclamés par ton établissement"
+      ],
+      repere:"Avant les premiers encaissements",
+      semaines:4,
+      liens:[
+        {t:"Entreprendre — service-public.gouv.fr", u:"https://entreprendre.service-public.gouv.fr/"}
+      ]
+    },
+    {
+      id:"assurances",
+      titre:"Assurances",
+      faire:[
+        "Identifier les assurances obligatoires pour ton activité",
+        "Vérifier la responsabilité civile professionnelle",
+        "Étudier prévoyance et multirisque selon tes besoins",
+        "Vérifier l'assurance décennale si ton activité relève du bâtiment"
+      ],
+      documents:[
+        "Description précise de l'activité",
+        "Les questionnaires de ton assureur"
+      ],
+      repere:"Avant le premier chantier, la première prestation ou la première vente",
+      semaines:6,
+      liens:[
+        {t:"Entreprendre — service-public.gouv.fr", u:"https://entreprendre.service-public.gouv.fr/"}
+      ]
+    },
+    {
+      id:"final",
+      titre:"Checklist finale",
+      faire:[
+        "Vérifier l'immatriculation et récupérer le justificatif",
+        "Activer les accès en ligne utiles",
+        "Vérifier les mentions légales de tes documents",
+        "Mettre en place la facturation",
+        "Planifier les déclarations à venir",
+        "Archiver les pièces justificatives",
+        "Vérifier la cotisation foncière des entreprises et son échéance",
+        "Prévoir le suivi annuel : déclarations, comptes et assemblées si tu es en société"
+      ],
+      documents:[
+        "Justificatif d'immatriculation",
+        "Statuts, si société",
+        "Contrats et assurances"
+      ],
+      repere:"Une fois l'immatriculation obtenue",
+      semaines:8,
+      liens:[
+        {t:"Annuaire des entreprises", u:"https://annuaire-entreprises.data.gouv.fr/"},
+        {t:"impots.gouv.fr", u:"https://www.impots.gouv.fr/"}
+      ]
+    }
+  ];
+
+  /* ------------------------------------------------------------------ */
+  var CLES = {
+    "1":"micro",
+    "2":"societe",
+    "3":"eurl"
+  };
+
+  var PISTES = {
+    micro:{
+      titre:"Micro-entreprise (auto-entrepreneur)",
+      pourquoi:[
+        "Tu démarres seul, sans associé.",
+        "Tu veux le moins de formalités possible.",
+        "Tu n'as pas besoin de déduire tes charges pour l'instant."
+      ],
+      vigilance:[
+        "Un plafond de chiffre d'affaires encadre ce régime : vérifie-le à la source, il dépend de ton activité.",
+        "La déduction des charges réelles n'est pas possible de la même façon qu'en société.",
+        "Certaines activités en sont exclues ou relèvent d'un régime particulier."
+      ]
+    },
+    societe:{
+      titre:"Société par actions : SASU si tu es seul, SAS si vous êtes plusieurs",
+      pourquoi:[
+        "Tu démarres à plusieurs, ou tu veux pouvoir accueillir de nouveaux associés facilement.",
+        "La souplesse de fonctionnement et de répartition des parts compte pour toi.",
+        "Tu veux arbitrer entre rémunération et dividendes."
+      ],
+      vigilance:[
+        "Une SASU est unipersonnelle : dès qu'un deuxième associé entre, elle devient une SAS.",
+        "Des statuts écrits sont nécessaires : fais-les relire avant signature.",
+        "Les règles sociales du dirigeant diffèrent de celles d'une entreprise individuelle.",
+        "La comptabilité et les obligations déclaratives sont plus lourdes."
+      ]
+    },
+    eurl:{
+      titre:"EURL ou SARL (société à responsabilité limitée)",
+      pourquoi:[
+        "Tu démarres seul, mais tu veux déduire tes charges et piloter finement.",
+        "Tu cherches un cadre plus encadré que la société par actions.",
+        "Tu prévois des revenus qui rendent la micro-entreprise inadaptée — à vérifier à la source avec des chiffres réels."
+      ],
+      vigilance:[
+        "La protection de ton patrimoine personnel ne dépend plus du statut : l'entrepreneur individuel bénéficie d'une séparation automatique des patrimoines — à vérifier à la source.",
+        "Des statuts écrits sont nécessaires : fais-les relire avant signature.",
+        "Le passage de l'entreprise individuelle à la société ne se défait pas d'un clic.",
+        "Les obligations comptables sont plus lourdes qu'en micro-entreprise."
+      ]
+    }
+  };
+
+  /* ---------------- Formulaire d'orientation ---------------- */
+  var formulaire = document.getElementById("formulaire");
+  var resultat = document.getElementById("resultat");
+
+  function reinitialiserFormulaire(){
+    formulaire.reset();
+    resultat.hidden = true;
+    resultat.innerHTML = "";
+  }
+
+  formulaire.addEventListener("submit", function(evenement){
+    evenement.preventDefault();
+    if(!formulaire.reportValidity()){ return; }
+
+    var donnees = new FormData(formulaire);
+    var q1 = donnees.get("q1");
+    var q3 = donnees.get("q3");
+    var q4 = donnees.get("q4");
+
+    /* Règles d'orientation, volontairement structurelles :
+       - une SASU est unipersonnelle, donc « à plusieurs » oriente vers une
+         société pluripersonnelle (SAS ou SARL) ;
+       - la TVA ne départage pas les statuts : une micro-entreprise peut
+         facturer la TVA, la question ne pèse donc pas ici ;
+       - la protection du patrimoine ne départage plus les statuts depuis la
+         séparation automatique des patrimoines de l'entrepreneur individuel. */
+    var piste;
+    if(q1 === "plusieurs" || q4 === "oui"){
+      piste = "societe";
+    } else if(q3 === "charges" || q3 === "remuneration"){
+      piste = "eurl";
+    } else {
+      piste = "micro";
+    }
+
+    var p = PISTES[piste];
+    var html = "";
+    html += "<h3>Piste d'orientation : " + p.titre + "</h3>";
+    html += "<p class=\"titre-liste\">Pourquoi cette piste</p><ul>";
+    p.pourquoi.forEach(function(l){ html += "<li>" + l + "</li>"; });
+    html += "</ul>";
+    html += "<p class=\"titre-liste\">Points de vigilance</p><ul>";
+    p.vigilance.forEach(function(l){ html += "<li>" + l + "</li>"; });
+    html += "</ul>";
+    html += "<p><strong>C'est une orientation, pas une décision.</strong> Aucun plafond, aucun taux ni aucun délai n'est avancé ici : " +
+            "ces valeurs dépendent de ton activité et de ta situation, et se vérifient à la source.</p>";
+    html += "<p><a href=\"https://entreprendre.service-public.gouv.fr/\">Comparer les statuts — service-public.gouv.fr</a></p>";
+    html += "<p><button type=\"button\" class=\"secondaire\" id=\"effacer-resultat\">Refaire le questionnaire</button></p>";
+
+    resultat.innerHTML = html;
+    resultat.hidden = false;
+    document.getElementById("effacer-resultat").addEventListener("click", reinitialiserFormulaire);
+    resultat.scrollIntoView({block:"nearest"});
+  });
+
+  /* ---------------- Parcours ---------------- */
+  var zoneEtapes = document.getElementById("etapes");
+
+  ETAPES.forEach(function(etape, indice){
+    var article = document.createElement("article");
+    article.className = "carte etape";
+    var h = "";
+    h += "<p class=\"num\">Étape " + (indice + 1) + " sur " + ETAPES.length + "</p>";
+    h += "<h3>" + etape.titre + "</h3>";
+
+    if(etape.avertissement){
+      h += "<div class=\"avertissement\"><p><strong>Rappel :</strong> ce parcours est un outil d'orientation et de préparation. " +
+           "Il ne remplace ni un conseil juridique, ni un conseil comptable, ni un conseil fiscal. Ce que tu coches ici n'est pas un acte juridique : " +
+           "les formalités se font auprès des organismes officiels.</p></div>";
+    }
+
+    h += "<p class=\"titre-liste\">À faire</p><ul>";
+    etape.faire.forEach(function(l){ h += "<li>" + l + "</li>"; });
+    h += "</ul>";
+
+    h += "<p class=\"titre-liste\">Documents à préparer</p><ul>";
+    etape.documents.forEach(function(l){ h += "<li>" + l + "</li>"; });
+    h += "</ul>";
+
+    h += "<p class=\"repere\"><b>Repère de travail :</b> " + etape.repere +
+         "<span class=\"verifier\">à vérifier à la source</span></p>";
+
+    h += "<p class=\"liens\">";
+    etape.liens.forEach(function(lien){
+      h += "<a href=\"" + lien.u + "\" rel=\"noopener\">" + lien.t + "</a>";
+    });
+    h += "</p>";
+
+    article.innerHTML = h;
+    zoneEtapes.appendChild(article);
+  });
+
+  /* ---------------- Checklist avec dates ---------------- */
+  var CLE_STOCKAGE = "ensemble-pour-entreprendre.v1";
+  var champDepart = document.getElementById("depart");
+  var zoneGroupes = document.getElementById("groupes");
+  var jauge = document.getElementById("jauge");
+  var jaugeRemplie = document.getElementById("jauge-remplie");
+  var compte = document.getElementById("compte");
+
+  var etat = { depart:"", coches:{} };
+
+  try{
+    var brut = window.localStorage.getItem(CLE_STOCKAGE);
+    if(brut){
+      var lu = JSON.parse(brut);
+      if(lu && typeof lu === "object"){
+        etat.depart = typeof lu.depart === "string" ? lu.depart : "";
+        etat.coches = lu.coches && typeof lu.coches === "object" ? lu.coches : {};
+      }
+    }
+  }catch(erreur){
+    etat = { depart:"", coches:{} };
+  }
+
+  function enregistrer(){
+    try{ window.localStorage.setItem(CLE_STOCKAGE, JSON.stringify(etat)); }catch(erreur){ /* stockage indisponible : on continue sans */ }
+  }
+
+  function cleCase(etapeId, indice){
+    return etapeId + "::" + indice;
+  }
+
+  function toutesLesCases(){
+    var liste = [];
+    ETAPES.forEach(function(etape){
+      etape.faire.forEach(function(_, indice){ liste.push(cleCase(etape.id, indice)); });
+    });
+    return liste;
+  }
+
+  function dateDuRepere(semaines){
+    if(!etat.depart){ return ""; }
+    var base = new Date(etat.depart + "T00:00:00");
+    if(isNaN(base.getTime())){ return ""; }
+    base.setDate(base.getDate() + semaines * 7);
+    var options = { day:"numeric", month:"long", year:"numeric" };
+    return base.toLocaleDateString("fr-FR", options);
+  }
+
+  function majJauge(){
+    var cases = toutesLesCases();
+    var total = cases.length;
+    var faites = 0;
+    cases.forEach(function(cle){ if(etat.coches[cle]){ faites += 1; } });
+    var pourcent = total ? Math.round((faites / total) * 100) : 0;
+    jaugeRemplie.style.width = pourcent + "%";
+    jauge.setAttribute("aria-valuenow", String(pourcent));
+    compte.textContent = faites + " point" + (faites > 1 ? "s" : "") + " sur " + total +
+                         " — " + pourcent + " %";
+  }
+
+  function construireChecklist(){
+    zoneGroupes.innerHTML = "";
+    ETAPES.forEach(function(etape, indiceEtape){
+      var groupe = document.createElement("div");
+      groupe.className = "groupe-checklist";
+
+      var date = dateDuRepere(etape.semaines);
+      var entete = "<h3>" + (indiceEtape + 1) + ". " + etape.titre + "</h3>";
+      if(date){
+        entete += "<p class=\"repere\">Semaine du <b>" + date + "</b> — plan de travail, pas une échéance légale.</p>";
+      }
+      groupe.innerHTML = entete;
+
+      etape.faire.forEach(function(libelle, indice){
+        var cle = cleCase(etape.id, indice);
+        var identifiant = "case-" + etape.id + "-" + indice;
+        var ligne = document.createElement("label");
+        ligne.className = "check";
+        ligne.setAttribute("for", identifiant);
+        var boite = document.createElement("input");
+        boite.type = "checkbox";
+        boite.id = identifiant;
+        boite.checked = !!etat.coches[cle];
+        boite.addEventListener("change", function(){
+          if(boite.checked){ etat.coches[cle] = true; } else { delete etat.coches[cle]; }
+          enregistrer();
+          majJauge();
+        });
+        var texte = document.createElement("span");
+        texte.textContent = libelle;
+        ligne.appendChild(boite);
+        ligne.appendChild(texte);
+        groupe.appendChild(ligne);
+      });
+
+      zoneGroupes.appendChild(groupe);
+    });
+    majJauge();
+  }
+
+  champDepart.value = etat.depart || "";
+  champDepart.addEventListener("change", function(){
+    etat.depart = champDepart.value || "";
+    enregistrer();
+    construireChecklist();
+  });
+
+  document.getElementById("reinitialiser").addEventListener("click", function(){
+    if(!window.confirm("Tout décocher et effacer la date de départ ?")){ return; }
+    etat = { depart:"", coches:{} };
+    champDepart.value = "";
+    try{ window.localStorage.removeItem(CLE_STOCKAGE); }catch(erreur){ /* rien */ }
+    construireChecklist();
+  });
+
+  construireChecklist();
+})();
+</script>
+</body>
+</html>
