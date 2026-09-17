@@ -933,8 +933,8 @@
         var alpha = 0.12 + Math.pow(utile, 1.2) * 0.88;
         /* Une borne trop proche deviendrait énorme et mangerait la scène :
            on borne son rayon, et elle s'efface en sortant du cadre. */
-        var rayon = Math.min(28, Math.max(2.5, 24 * haut.echelle));
-        var sortie = Math.min(1, Math.max(0, (sol.distance - 260) / 260));
+        var rayon = Math.min(38, Math.max(3, 32 * haut.echelle));
+        var sortie = Math.min(1, Math.max(0, (sol.distance - 200) / 240));
         alpha *= sortie;
 
         ctx.beginPath();
