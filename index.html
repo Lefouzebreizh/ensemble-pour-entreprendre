@@ -827,7 +827,7 @@
     var BOUCLE = ECART * 8;      /* huit bornes par tour : la boucle est parfaite */
     var HAUTEUR_CAM = 130;       /* la caméra, au-dessus du sol */
     var HAUTEUR_BORNE = 95;      /* la borne, au-dessus du sol */
-    var HORIZON = hauteur * 0.42;
+    var HORIZON = hauteur * 0.38;
     var DUREE = 12000;
     var PAS = 40;
     var PORTEE = 3200;
@@ -891,7 +891,7 @@
         ctx.moveTo(b1.x, b1.y);
         ctx.lineTo(b2.x, b2.y);
         ctx.strokeStyle = "rgba(64,224,208," + (0.05 + intensite * 0.7).toFixed(3) + ")";
-        ctx.lineWidth = Math.max(0.6, 4 * a1.echelle);
+        ctx.lineWidth = Math.max(0.6, Math.min(5, 4 * a1.echelle));
         ctx.stroke();
       }
 
@@ -905,7 +905,7 @@
         ctx.moveTo(m1.x, m1.y);
         ctx.lineTo(m2.x, m2.y);
         ctx.strokeStyle = "rgba(183,155,255," + (0.04 + intensite * 0.5).toFixed(3) + ")";
-        ctx.lineWidth = Math.max(0.6, 7 * m1.echelle);
+        ctx.lineWidth = Math.max(0.6, Math.min(6, 7 * m1.echelle));
         ctx.stroke();
       }
 
@@ -919,14 +919,20 @@
         var actuelle = (n === borneCourante);
         var utile = Math.max(0, 1 - sol.distance / PORTEE);
         var alpha = 0.12 + Math.pow(utile, 1.2) * 0.88;
-        var rayon = Math.max(3, 26 * haut.echelle);
+        /* Une borne trop proche deviendrait énorme et mangerait la scène :
+           on borne son rayon, et elle s'efface en sortant du cadre. */
+        var rayon = Math.min(28, Math.max(2.5, 24 * haut.echelle));
+        var sortie = Math.min(1, Math.max(0, (sol.distance - 260) / 260));
+        alpha *= sortie;
 
         ctx.beginPath();
         ctx.moveTo(sol.x, sol.y);
         ctx.lineTo(haut.x, haut.y);
         ctx.strokeStyle = "rgba(64,224,208," + (alpha * 0.45).toFixed(3) + ")";
-        ctx.lineWidth = Math.max(0.8, 3 * sol.echelle);
+        ctx.lineWidth = Math.max(0.8, Math.min(4, 3 * sol.echelle));
         ctx.stroke();
+
+        if(sortie <= 0){ continue; }
 
         if(actuelle){
           ctx.beginPath();
