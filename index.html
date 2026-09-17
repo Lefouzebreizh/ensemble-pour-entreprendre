@@ -804,14 +804,18 @@
   construireChecklist();
 
   /* ---------------- Le chemin des huit étapes, vu en perspective ----------
-     Une route qui s'enfonce vers l'horizon : le ruban du chemin, huit bornes
-     numérotées, une caméra qui avance, l'étape en cours qui s'allume.
+     La scène : une route de nuit qui traverse la paperasse, un trait lumineux
+     qui s'y fraie un chemin, huit bornes numérotées — et, au bout, le
+     bâtiment qui se monte étage par étage : l'entreprise, avec l'éclat du
+     moment où elle est là.
      Écrit à la main sur <canvas> : aucune bibliothèque, aucun réseau.
-     Le tracé est périodique, donc la boucle de douze secondes est parfaite
-     (elle revient exactement au même point, sans saut visible).
-     Tout est facultatif — si le canvas n'existe pas (DOM simulé des audits,
-     navigateur ancien), ou si le mouvement est réduit, on ne fait rien ou
-     une image fixe. Jamais d'exception qui emporterait le reste de la page. */
+     Tout est périodique, donc la boucle de douze secondes est parfaite.
+     La caméra avance vers les z décroissants : un objet est devant nous quand
+     sa distance (cz - z) est positive, et il grossit à mesure qu'on approche.
+     Le trait lumineux est turquoise et non jaune : la charte du site interdit
+     l'orange et le jaune.
+     Tout est facultatif — sans canvas (DOM simulé des audits) ou si le
+     mouvement est réduit, on dessine une image fixe. Jamais d'exception. */
   function dessinerChemin(){
     var scene = document.getElementById("chemin-3d");
     if(!scene || typeof scene.getContext !== "function"){ return; }
@@ -836,6 +840,12 @@
     var DUREE = 12000;
     var PAS = 40;
     var PORTEE = 3200;
+    var ECART_PAPIER = 190;      /* un tas de paperasse tous les 190 unités */
+    var ECART_PULSE = 760;       /* un trait lumineux tous les 760 unités */
+    var DEMI_BATIMENT = 135;     /* au bout du chemin : le bâtiment, l'entreprise */
+    var PROF_BATIMENT = 110;
+    var HAUTEUR_BATIMENT = 330;
+    var DIST_BATIMENT = BOUCLE / 2;
 
     function axe(z){             /* le tracé du chemin, qui serpente doucement :
                                     un virage trop ample sort du champ de la
@@ -861,7 +871,113 @@
       };
     }
 
-    function dessinerImage(cz){
+    function bruit(m){           /* un hasard stable, pour varier la paperasse */
+      var v = Math.sin(m * 12.9898) * 43758.5453;
+      return v - Math.floor(v);
+    }
+
+    function face(a, b, c, d, couleur){
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.lineTo(c.x, c.y);
+      ctx.lineTo(d.x, d.y);
+      ctx.closePath();
+      ctx.fillStyle = couleur;
+      ctx.fill();
+    }
+
+    /* un tas de paperasse : trois faces suffisent, vues depuis la route */
+    function tas(cx, z, demiL, demiP, hauteur, voile, cz){
+      var x0 = cx - demiL, x1 = cx + demiL;
+      var zAv = z + demiP, zAr = z - demiP;
+      var bg = projeter(x0, 0, zAv, cz), bd = projeter(x1, 0, zAv, cz);
+      var hg = projeter(x0, hauteur, zAv, cz), hd = projeter(x1, hauteur, zAv, cz);
+      var hgAr = projeter(x0, hauteur, zAr, cz), hdAr = projeter(x1, hauteur, zAr, cz);
+      if(!bg || !bd || !hg || !hd || !hgAr || !hdAr){ return; }
+      face(bg, bd, hd, hg, "rgba(19,30,49," + (0.92 * voile).toFixed(3) + ")");
+      face(hg, hd, hdAr, hgAr, "rgba(58,74,100," + (0.9 * voile).toFixed(3) + ")");
+      var flanc = (cx > axe(cz)) ? x0 : x1;   /* le côté qu'on voit depuis la route */
+      var f1 = projeter(flanc, 0, zAv, cz), f2 = projeter(flanc, 0, zAr, cz);
+      var f3 = projeter(flanc, hauteur, zAr, cz), f4 = projeter(flanc, hauteur, zAv, cz);
+      if(f1 && f2 && f3 && f4){ face(f1, f2, f3, f4, "rgba(34,48,72," + (0.88 * voile).toFixed(3) + ")"); }
+    }
+
+    /* au bout du chemin : le bâtiment, monté étage par étage */
+    function batiment(cx, z, cz, montee){
+      var h = HAUTEUR_BATIMENT * montee;
+      if(h < 5){ return null; }
+      var x0 = cx - DEMI_BATIMENT, x1 = cx + DEMI_BATIMENT;
+      var zAv = z + PROF_BATIMENT, zAr = z - PROF_BATIMENT;
+      var bg = projeter(x0, 0, zAv, cz), bd = projeter(x1, 0, zAv, cz);
+      var hg = projeter(x0, h, zAv, cz), hd = projeter(x1, h, zAv, cz);
+      var hgAr = projeter(x0, h, zAr, cz), hdAr = projeter(x1, h, zAr, cz);
+      if(!bg || !bd || !hg || !hd || !hgAr || !hdAr){ return null; }
+
+      face(bg, bd, hd, hg, "rgba(64,224,208,.09)");
+      face(hg, hd, hdAr, hgAr, "rgba(183,155,255,.13)");
+
+      ctx.strokeStyle = "rgba(64,224,208,.8)";
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(hg.x, hg.y);
+      ctx.lineTo(hd.x, hd.y);
+      ctx.lineTo(hdAr.x, hdAr.y);
+      ctx.lineTo(hgAr.x, hgAr.y);
+      ctx.closePath();
+      ctx.moveTo(bg.x, bg.y);
+      ctx.lineTo(hg.x, hg.y);
+      ctx.moveTo(bd.x, bd.y);
+      ctx.lineTo(hd.x, hd.y);
+      ctx.moveTo(hgAr.x, hgAr.y);
+      ctx.lineTo(hdAr.x, hdAr.y);
+      ctx.stroke();
+
+      /* les planchers, pour qu'on voie les étages se monter */
+      for(var e = 1; e < 3; e += 1){
+        var yE = (h / 3) * e;
+        var g1 = projeter(x0, yE, zAv, cz), g2 = projeter(x1, yE, zAv, cz);
+        var g3 = projeter(x1, yE, zAr, cz), g4 = projeter(x0, yE, zAr, cz);
+        if(g1 && g2 && g3 && g4){
+          ctx.beginPath();
+          ctx.moveTo(g1.x, g1.y);
+          ctx.lineTo(g2.x, g2.y);
+          ctx.lineTo(g3.x, g3.y);
+          ctx.lineTo(g4.x, g4.y);
+          ctx.strokeStyle = "rgba(183,155,255,.35)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+
+      /* l'enseigne : une bande allumée en façade */
+      var e1 = projeter(x0 + 26, h * 0.62, zAv, cz), e2 = projeter(x1 - 26, h * 0.62, zAv, cz);
+      if(e1 && e2){
+        ctx.beginPath();
+        ctx.moveTo(e1.x, e1.y);
+        ctx.lineTo(e2.x, e2.y);
+        ctx.strokeStyle = "rgba(235,255,252,.85)";
+        ctx.lineWidth = Math.max(1.4, 5 * e1.echelle);
+        ctx.lineCap = "round";
+        ctx.stroke();
+      }
+
+      /* l'intérieur qui s'allume */
+      var centre = projeter(cx, h * 0.45, z, cz);
+      if(centre){
+        var rayonLueur = Math.max(24, 170 * centre.echelle);
+        var lueurBat = ctx.createRadialGradient(centre.x, centre.y, 1, centre.x, centre.y, rayonLueur);
+        lueurBat.addColorStop(0, "rgba(64,224,208,.26)");
+        lueurBat.addColorStop(1, "rgba(64,224,208,0)");
+        ctx.beginPath();
+        ctx.arc(centre.x, centre.y, rayonLueur, 0, Math.PI * 2);
+        ctx.fillStyle = lueurBat;
+        ctx.fill();
+      }
+      return projeter(cx, 0, zAv, cz);
+    }
+
+    function dessinerImage(cz, progres){
       ctx.clearRect(0, 0, largeur, hauteur);
 
       /* le ciel */
@@ -876,7 +992,7 @@
       ctx.fillRect(0, HORIZON, largeur, hauteur - HORIZON);
 
       /* le ruban du chemin, du plus loin au plus proche */
-      var borneCourante = Math.floor(cz / ECART) + 1;
+      var borneCourante = Math.floor(cz / ECART);
       var z, suivant, a1, b1, a2, b2, intensite;
       for(z = cz - PORTEE; z < cz + 240; z += PAS){
         suivant = z + PAS;
@@ -921,8 +1037,54 @@
         ctx.stroke();
       }
 
+      /* la paperasse : les dossiers et les piles qu'il faut traverser */
+      var premierLot = Math.floor((cz - PORTEE) / ECART_PAPIER) - 1;
+      var dernierLot = Math.floor((cz + 100) / ECART_PAPIER) + 1;
+      for(var m = premierLot; m <= dernierLot; m += 1){
+        var zt = m * ECART_PAPIER;
+        var dt = cz - zt;
+        if(dt < 150 || dt > PORTEE){ continue; }
+        var r1 = bruit(m), r2 = bruit(m + 0.5), r3 = bruit(m + 0.25);
+        var cote = ((m % 2) === 0) ? -1 : 1;
+        var xc = axe(zt) + cote * (DEMI + 80 + r1 * 110);
+        tas(xc, zt, 34 + r2 * 34, 30 + r3 * 28, 30 + r1 * 95,
+            Math.pow(Math.max(0, 1 - dt / PORTEE), 0.8), cz);
+      }
+
+      /* le trait lumineux qui s'avance sur le chemin */
+      var premierTrait = Math.floor((cz - PORTEE) / ECART_PULSE) - 1;
+      var dernierTrait = Math.floor((cz + 100) / ECART_PULSE) + 1;
+      for(var q = premierTrait; q <= dernierTrait; q += 1){
+        var zp = q * ECART_PULSE;
+        var dp = cz - zp;
+        if(dp < 90 || dp > PORTEE){ continue; }
+        var bout = projeter(axe(zp), 2, zp, cz);
+        var queue = projeter(axe(zp + 170), 2, zp + 170, cz);
+        if(!bout || !queue){ continue; }
+        var voileT = Math.pow(Math.max(0, 1 - dp / PORTEE), 1.1);
+        ctx.beginPath();
+        ctx.moveTo(queue.x, queue.y);
+        ctx.lineTo(bout.x, bout.y);
+        ctx.strokeStyle = "rgba(64,224,208," + (0.8 * voileT).toFixed(3) + ")";
+        ctx.lineWidth = Math.max(1, Math.min(10, 10 * bout.echelle));
+        ctx.lineCap = "round";
+        ctx.stroke();
+        var rayonTrait = Math.max(2, Math.min(15, 12 * bout.echelle));
+        var halo = ctx.createRadialGradient(bout.x, bout.y, 0, bout.x, bout.y, rayonTrait * 5);
+        halo.addColorStop(0, "rgba(200,255,250," + (0.7 * voileT).toFixed(3) + ")");
+        halo.addColorStop(1, "rgba(64,224,208,0)");
+        ctx.beginPath();
+        ctx.arc(bout.x, bout.y, rayonTrait * 5, 0, Math.PI * 2);
+        ctx.fillStyle = halo;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(bout.x, bout.y, rayonTrait, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(238,255,252," + Math.min(1, 0.95 * voileT).toFixed(3) + ")";
+        ctx.fill();
+      }
+
       /* les huit bornes numérotées, celle du moment allumée */
-      for(var n = borneCourante - 3; n <= borneCourante + 7; n += 1){
+      for(var n = borneCourante - 8; n <= borneCourante + 2; n += 1){
         var zBorne = n * ECART;
         var sol = projeter(axe(zBorne), 0, zBorne, cz);
         var haut = projeter(axe(zBorne), HAUTEUR_BORNE, zBorne, cz);
@@ -964,6 +1126,17 @@
         ctx.fillText(String(numero), haut.x, haut.y + rayon * 0.06);
       }
 
+      /* au bout du chemin : l'entreprise, qui se monte étage par étage */
+      var base = Math.floor(cz / BOUCLE) * BOUCLE;
+      var zBat = base + DIST_BATIMENT;
+      if(zBat > cz){ zBat -= BOUCLE; }
+      var dBat = cz - zBat;
+      var xBat = axe(zBat) + 330;
+      var montee = Math.min(1, Math.max(0, (DIST_BATIMENT - dBat) / (DIST_BATIMENT * 0.72)));
+      var eclat = Math.min(1, Math.max(0, 1 - Math.abs(dBat - 430) / 430));
+      var pied = null;
+      if(dBat > 140){ pied = batiment(xBat, zBat, cz, montee); }
+
       /* la brume : le lointain se fond dans le ciel */
       var brume = ctx.createLinearGradient(0, HORIZON - 70, 0, HORIZON + 150);
       brume.addColorStop(0, "#050b18");
@@ -977,6 +1150,24 @@
       lueur.addColorStop(1, "rgba(64,224,208,0)");
       ctx.fillStyle = lueur;
       ctx.fillRect(0, 0, largeur, HORIZON + 160);
+
+      /* l'éclat, au moment où l'entreprise est là : des ondes, puis un flash */
+      if(eclat > 0.01 && pied){
+        for(var r = 0; r < 3; r += 1){
+          var rayonOnde = (1 - eclat) * (240 + r * 160) + 30;
+          ctx.save();
+          ctx.translate(pied.x, pied.y);
+          ctx.scale(1, 0.42);
+          ctx.beginPath();
+          ctx.arc(0, 0, rayonOnde, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(183,155,255," + (0.5 * eclat).toFixed(3) + ")";
+          ctx.lineWidth = 2 + 3 * eclat;
+          ctx.stroke();
+          ctx.restore();
+        }
+        ctx.fillStyle = "rgba(190,255,248," + (0.15 * eclat).toFixed(3) + ")";
+        ctx.fillRect(0, 0, largeur, hauteur);
+      }
     }
 
     var mouvementReduit = false;
@@ -985,14 +1176,16 @@
     }catch(erreur){ mouvementReduit = false; }
 
     if(mouvementReduit || typeof window.requestAnimationFrame !== "function"){
-      dessinerImage(ECART * 1.5);   /* une image fixe, au milieu du chemin */
+      dessinerImage(-700, 0.6);   /* une image fixe : devant le bâtiment */
       return;
     }
 
     var depart = Date.now();
     function boucle(){
       var ecoule = (Date.now() - depart) % DUREE;
-      dessinerImage((ecoule / DUREE) * BOUCLE);
+      var part = ecoule / DUREE;
+      /* la caméra avance : elle va vers les z décroissants */
+      dessinerImage(-part * BOUCLE, part);
       window.requestAnimationFrame(boucle);
     }
     boucle();
