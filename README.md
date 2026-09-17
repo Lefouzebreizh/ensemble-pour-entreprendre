@@ -22,10 +22,14 @@ qu'une fois une carte choisie. Le lien « Revenir à l'accueil » ramène aux
 cartes. Chaque carte est un simple lien d'ancrage : **la page fonctionne sans
 JavaScript**, les parties s'affichent par `:target`.
 
-**Le chemin des huit étapes, en perspective.** À droite de l'accueil, le chemin
-est tracé sur un `<canvas>` : projection perspective écrite à la main, aucune
-bibliothèque, aucun réseau, boucle d'environ douze secondes. Si le système
-demande de réduire les mouvements, l'image reste fixe.
+**Le chemin des huit étapes, en vidéo.** À droite de l'accueil, une vidéo
+(`chemin-des-huit-etapes.mp4`, 4,45 Mo) montre la route de nuit qui traverse les
+dossiers et mène à l'entreprise qui se construit. Elle se lance seule, en
+boucle, sans son (`autoplay muted loop playsinline`). Si le système demande de
+réduire les mouvements, elle reste en pause sur sa première image.
+
+La page n'est donc plus un fichier unique : elle s'accompagne de ce fichier
+vidéo. Le reste — HTML, CSS, JavaScript — tient toujours dans `index.html`.
 
 Puis quatre parties, dans l'ordre où un créateur se pose les questions.
 
@@ -191,10 +195,10 @@ page large. Les trois audits ont été rejoués après la refonte, et ils passen
   une seule occurrence légitime, « SAS si vous êtes plusieurs », qui désigne les
   **associés** et non le lecteur.
 
-**Ce que ces audits ne prouvent pas** : l'animation du chemin. Le DOM simulé
-n'exécute ni `<canvas>` ni `getContext` — le script est donc écrit pour
-s'arrêter proprement dans ce cas, et **l'animation n'a été vue dans aucun
-navigateur**. Elle est à regarder à l'œil, comme le reste du rendu.
+## Ce que ces audits ne prouvent pas
+
+Le contenu de la vidéo, évidemment : elle est jouée telle quelle, sans
+traitement. Et l'aspect final reste à regarder à l'œil, comme le reste du rendu.
 
 ## Ce qui n'a pas pu être vérifié
 
