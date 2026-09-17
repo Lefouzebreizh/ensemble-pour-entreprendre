@@ -1,0 +1,20 @@
+{
+  "name": "Ensemble pour entreprendre",
+  "short_name": "Entreprendre",
+  "description": "Parcours guidé et checklist personnalisée pour créer son activité : orientation de statut, documents à préparer, formalités et liens officiels.",
+  "lang": "fr-FR",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#030913",
+  "theme_color": "#030913",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

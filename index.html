@@ -1,185 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Parcours guidé et checklist personnalisée pour créer son activité : orientation de statut, documents à préparer, formalités et liens officiels." />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="theme-color" content="#030913" />
+<meta name="application-name" content="Ensemble pour entreprendre" />
+<meta name="apple-mobile-web-app-title" content="Ensemble pour entreprendre" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<link rel="canonical" href="https://lefouzebreizh.github.io/ensemble-pour-entreprendre/" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="manifest" href="manifest.webmanifest" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:site_name" content="Ensemble pour entreprendre" />
+<meta property="og:title" content="Créer son activité sans se perdre — Ensemble pour entreprendre" />
+<meta property="og:description" content="Parcours guidé et checklist personnalisée pour créer son activité : orientation de statut, documents à préparer, formalités et liens officiels." />
+<meta property="og:url" content="https://lefouzebreizh.github.io/ensemble-pour-entreprendre/" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="css/style.css" />
 <title>Créer son activité sans se perdre — Ensemble pour entreprendre</title>
-<meta name="description" content="Parcours guidé et checklist personnalisée pour créer son activité : orientation de statut, documents à préparer, formalités et liens officiels.">
-<style>
-  :root{
-    --fond:#030913;
-    --panneau:#0a1424;
-    --panneau-clair:#101c31;
-    --bordure:rgba(64,224,208,.22);
-    --bordure-violette:rgba(183,155,255,.40);
-    --texte:#e9eff8;
-    --texte-doux:#a9b8cd;
-    --turquoise:#40e0d0;
-    --violet:#b79bff;
-    --rayon:14px;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0;
-    background:var(--fond);
-    color:var(--texte);
-    font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    padding-bottom:3rem;
-  }
-  .enveloppe{max-width:1180px;margin:0 auto;padding:0 1rem}
-  a{color:var(--turquoise);text-decoration:underline;text-underline-offset:2px}
-  a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible{
-    outline:2px solid var(--violet);outline-offset:2px;border-radius:6px;
-  }
-  header{padding:2.2rem 0 1rem}
-  .marque{
-    margin:0;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--turquoise);
-  }
-  h1{font-size:1.55rem;line-height:1.25;margin:.6rem 0 .5rem}
-  .chapo{margin:0;color:var(--texte-doux)}
-  h2{font-size:1.2rem;margin:2.2rem 0 .6rem}
-  h3{font-size:1rem;margin:0 0 .5rem}
-  p{margin:.5rem 0}
-  .avertissement{
-    background:var(--panneau-clair);
-    border:1px solid var(--bordure-violette);
-    border-left:4px solid var(--violet);
-    border-radius:var(--rayon);
-    padding:.9rem 1rem;
-    margin:1rem 0 1.4rem;
-  }
-  .avertissement p{margin:.35rem 0;font-size:.95rem}
-  .avertissement strong{color:var(--violet)}
-  .alerte-pro{
-    background:linear-gradient(135deg,rgba(64,224,208,.08),rgba(183,155,255,.12)),var(--panneau-clair);
-    border:1px solid var(--bordure-violette);border-left:4px solid var(--turquoise);
-    border-radius:var(--rayon);padding:.9rem 1rem;margin:1rem 0 1.4rem;
-  }
-  .alerte-pro p{margin:.35rem 0;font-size:.95rem}
-  .alerte-pro ul{margin:.5rem 0 .5rem 1.1rem}
-  .alerte-pro li{margin:.3rem 0;font-size:.95rem}
-  #sources{margin-top:2rem}
-  #sources li{margin:.35rem 0}
-  nav.sommaire{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 0}
-  nav.sommaire a{
-    border:1px solid var(--bordure);border-radius:999px;padding:.35rem .8rem;
-    font-size:.9rem;text-decoration:none;color:var(--texte)
-  }
-  .carte{
-    background:var(--panneau);border:1px solid var(--bordure);
-    border-radius:var(--rayon);padding:1rem;margin:.9rem 0;
-  }
-  .question{border:0;margin:0 0 1rem;padding:0}
-  .question legend{font-weight:600;padding:0 0 .35rem}
-  .choix{display:block;margin:.25rem 0;color:var(--texte-doux)}
-  .choix input{margin-right:.5rem}
-  button{
-    font:inherit;color:#04121a;background:var(--turquoise);
-    border:0;border-radius:999px;padding:.6rem 1.2rem;font-weight:600;cursor:pointer;
-  }
-  button.secondaire{
-    background:transparent;color:var(--texte);border:1px solid var(--bordure-violette);
-  }
-  .resultat{border-color:var(--bordure-violette)}
-  .resultat h3{color:var(--turquoise)}
-  .etape{border-left:3px solid var(--turquoise)}
-  .etape .num{
-    display:inline-block;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--turquoise);margin-bottom:.2rem;
-  }
-  ul{margin:.4rem 0 .4rem 1.1rem;padding:0}
-  li{margin:.25rem 0}
-  .titre-liste{font-weight:600;color:var(--texte);margin:.7rem 0 .1rem}
-  .repere{
-    margin-top:.8rem;padding:.6rem .8rem;border-radius:10px;
-    background:var(--panneau-clair);border:1px solid var(--bordure);
-    font-size:.92rem;color:var(--texte-doux)
-  }
-  .repere b{color:var(--violet)}
-  .liens{margin-top:.7rem;font-size:.95rem}
-  .liens a{display:inline-block;margin:.15rem .8rem .15rem 0}
-  .verifier{
-    display:inline-block;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
-    color:var(--violet);border:1px solid var(--bordure-violette);border-radius:999px;
-    padding:.1rem .55rem;margin-left:.4rem
-  }
-  .check{
-    display:flex;gap:.6rem;align-items:flex-start;margin:.3rem 0;
-    color:var(--texte-doux)
-  }
-  .check input{margin-top:.35rem}
-  .jauge{
-    height:10px;border-radius:999px;background:var(--panneau-clair);
-    border:1px solid var(--bordure);overflow:hidden;margin:.6rem 0 .3rem
-  }
-  .jauge > span{display:block;height:100%;background:var(--turquoise);width:0}
-  .compte{font-size:.9rem;color:var(--texte-doux);margin:0 0 .8rem}
-  .date-champ{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:.6rem 0 1rem}
-  input[type="date"]{
-    font:inherit;color:var(--texte);background:var(--panneau-clair);
-    border:1px solid var(--bordure);border-radius:10px;padding:.5rem .7rem
-  }
-  footer{margin-top:2.5rem;color:var(--texte-doux);font-size:.9rem}
-  footer ul{margin-left:1rem}
-  .groupe-checklist{border-left:2px solid var(--bordure);padding-left:.9rem;margin:1rem 0}
-  .groupe-checklist h3{color:var(--texte)}
-  @media (min-width:620px){
-    h1{font-size:1.9rem}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *{transition:none !important;animation:none !important;scroll-behavior:auto !important}
-  }
-
-  /* ---------------- Accueil à cartes ---------------- */
-  .entete{padding:1.6rem 0 .4rem}
-  #accueil h1{margin:.2rem 0 .6rem}
-  .accueil-grille{display:grid;gap:1.4rem;align-items:center;margin:.4rem 0 1.6rem}
-  .accroche{font-size:1.3rem;line-height:1.35;color:var(--texte);margin:.6rem 0 .7rem}
-  .pastilles{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;margin:1rem 0 0;padding:0}
-  .pastilles li{
-    border:1px solid var(--bordure);border-radius:999px;padding:.25rem .8rem;
-    font-size:.85rem;color:var(--texte-doux)
-  }
-  .scene{
-    border:1px solid var(--bordure);border-radius:20px;overflow:hidden;
-    background:radial-gradient(120% 120% at 70% 10%, rgba(64,224,208,.10), rgba(3,9,19,0) 60%), var(--panneau)
-  }
-  .chemin-video{display:block;width:100%;height:auto;background:#030913}
-  .titre-accueil{font-size:1.1rem;margin:1.6rem 0 .7rem}
-  .cartes-choix{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
-  .choix{display:flex;flex-direction:column;margin:0}
-  .choix h3{margin:0 0 .4rem;font-size:1.02rem}
-  .choix .mot{color:var(--turquoise)}
-  .choix .icone{margin:0 0 .4rem;font-size:1.2rem;color:var(--violet)}
-  .choix p{margin:0 0 1rem;color:var(--texte-doux);font-size:.95rem}
-  .choix .bouton{margin-top:auto;align-self:flex-start}
-  .bouton{
-    display:inline-block;font:inherit;font-weight:600;color:#04121a;text-decoration:none;
-    background:linear-gradient(100deg,var(--turquoise),var(--violet));
-    border:0;border-radius:999px;padding:.6rem 1.2rem;cursor:pointer
-  }
-  .bouton:hover{filter:brightness(1.08)}
-  .retour{
-    display:inline-block;color:var(--texte);border:1px solid var(--bordure-violette);
-    border-radius:999px;padding:.4rem .9rem;font-size:.9rem;text-decoration:none
-  }
-
-  /* ---------------- Le contenu vit derrière les cartes ----------------
-     Sans JavaScript, chaque carte reste un lien vers son ancre :
-     :target affiche la bonne partie. Rien ne dépend du script.      */
-  #contenu{margin-top:.6rem}
-  #contenu section{display:none}
-  #contenu section:target{display:block}
-  .retour-ligne{margin:1.2rem 0 .6rem}
-  #etapes{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
-  #etapes .carte{margin:0}
-
-  @media (min-width:900px){
-    .accueil-grille{grid-template-columns:1.05fr .95fr}
-  }
-</style>
 </head>
 <body>
 <div class="enveloppe">
@@ -201,7 +42,7 @@
           <li>À ton rythme</li>
         </ul>
       </div>
-      <div class="scene">
+      <div class="scene" id="scene">
         <video id="chemin-video" class="chemin-video" src="chemin-des-huit-etapes.mp4"
                autoplay muted loop playsinline preload="auto"
                aria-label="Le chemin des huit étapes : une route de nuit traverse les dossiers et mène à l'entreprise qui se construit"></video>
@@ -857,5 +698,19 @@
   })();
 })();
 </script>
+  <script src="js/dates.js"></script>
+  <script src="js/coffre.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/data/statut.js"></script>
+  <script src="js/data/dossier.js"></script>
+  <script src="js/data/formalites.js"></script>
+  <script src="js/data/urssaf.js"></script>
+  <script src="js/data/impots.js"></script>
+  <script src="js/data/banque.js"></script>
+  <script src="js/data/assurances.js"></script>
+  <script src="js/data/final.js"></script>
+  <script src="js/data/orientation.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/scene-video.js"></script>
 </body>
 </html>
