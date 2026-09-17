@@ -824,13 +824,20 @@
       sommets.push({ x:Math.cos(angle) * 300, z:Math.sin(angle) * 300, y:(i % 2 === 0) ? -46 : -16 });
     }
 
+    /* La caméra est posée au-dessus du chemin : sans cette inclinaison, la
+       boucle s'affiche de profil et ressemble à un simple trait. */
+    var INCLINAISON = 0.52;
+
     function projet(x, y, z, rotation){
       var ca = Math.cos(rotation), sa = Math.sin(rotation);
       var xr = x * ca - z * sa;
       var zr = x * sa + z * ca;
-      var profondeur = zr + 900;
-      var echelle = 700 / Math.max(profondeur, 80);
-      return { x:largeur / 2 + xr * echelle, y:hauteur / 2 + 120 + y * echelle, echelle:echelle };
+      var ci = Math.cos(INCLINAISON), si = Math.sin(INCLINAISON);
+      var yr = y * ci - zr * si;
+      var zc = y * si + zr * ci;
+      var profondeur = zc + 1100;
+      var echelle = 760 / Math.max(profondeur, 80);
+      return { x:largeur / 2 + xr * echelle, y:hauteur / 2 + 40 + yr * echelle, echelle:echelle };
     }
 
     function dessinerImage(rotation, indiceActif){
