@@ -825,9 +825,14 @@
     var DEMI = 190;              /* demi-largeur du ruban de chemin */
     var ECART = 380;             /* distance entre deux bornes */
     var BOUCLE = ECART * 8;      /* huit bornes par tour : la boucle est parfaite */
-    var HAUTEUR_CAM = 130;       /* la caméra, au-dessus du sol */
-    var HAUTEUR_BORNE = 95;      /* la borne, au-dessus du sol */
-    var HORIZON = hauteur * 0.38;
+    var HAUTEUR_CAM = 75;        /* la caméra, au-dessus du sol */
+    var HAUTEUR_BORNE = 45;      /* la borne, au-dessus du sol */
+    var PLONGEE = 0.21;          /* la caméra regarde un peu vers le bas :
+                                    sans cette plongée, la route s'écrase contre
+                                    l'horizon et se lit comme un simple fil */
+    var COS_P = Math.cos(PLONGEE), SIN_P = Math.sin(PLONGEE);
+    var CENTRE_Y = hauteur * 0.5;
+    var HORIZON = CENTRE_Y - FOCALE * Math.tan(PLONGEE);
     var DUREE = 12000;
     var PAS = 40;
     var PORTEE = 3200;
@@ -836,14 +841,19 @@
       return 220 * Math.sin((2 * Math.PI * z) / BOUCLE);
     }
 
-    /* y = hauteur au-dessus du sol ; le sol est à zéro, le ciel au-dessus. */
+    /* y = hauteur au-dessus du sol ; le sol est à zéro, le ciel au-dessus.
+       La caméra est inclinée de PLONGEE vers le bas. */
     function projeter(x, y, z, cz){
       var distance = cz - z;
-      if(distance < 45){ return null; }
-      var echelle = FOCALE / distance;
+      if(distance < 40){ return null; }
+      var rel = y - HAUTEUR_CAM;
+      var profondeur = -rel * SIN_P + distance * COS_P;
+      if(profondeur < 40){ return null; }
+      var vertical = rel * COS_P + distance * SIN_P;
+      var echelle = FOCALE / profondeur;
       return {
         x:largeur / 2 + (x - axe(cz)) * echelle,
-        y:HORIZON + (HAUTEUR_CAM - y) * echelle,
+        y:CENTRE_Y - vertical * echelle,
         echelle:echelle,
         distance:distance
       };
